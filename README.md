@@ -15,3 +15,4 @@ hola chicos recuerden que para poder iniciar el proyecto deben tener instalado a
 con esto ejecutan 
 - src/app.py
 y se les ejecuta el server en el puerto 5000
+

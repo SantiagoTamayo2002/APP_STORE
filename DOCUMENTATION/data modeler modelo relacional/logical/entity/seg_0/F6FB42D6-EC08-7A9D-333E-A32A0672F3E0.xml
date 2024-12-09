@@ -1,0 +1,112 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="F6FB42D6-EC08-7A9D-333E-A32A0672F3E0" name="USUARIO">
+<createdBy>santi</createdBy>
+<createdTime>2024-12-08 23:36:27 UTC</createdTime>
+<ownerDesignName>data modeler modelo relacional</ownerDesignName>
+<engineerTo>
+<item key="D1859799-DAA1-C913-68AE-EEB6306DEB26" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<shortName>user</shortName>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="DNI" id="AF0ED0F5-D8B2-0513-3C53-3040FE284B24">
+<createdBy>santi</createdBy>
+<createdTime>2024-12-08 23:37:03 UTC</createdTime>
+<comment><![CDATA[Atributo de tipo primario para la tabla de usuarios ]]></comment>
+<ownerDesignName>data modeler modelo relacional</ownerDesignName>
+<engineerTo>
+<item key="D1859799-DAA1-C913-68AE-EEB6306DEB26" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="nom nombre" id="2396017C-BE0E-597A-9BB0-4C91A13A353E">
+<createdBy>santi</createdBy>
+<createdTime>2024-12-08 23:38:24 UTC</createdTime>
+<ownerDesignName>data modeler modelo relacional</ownerDesignName>
+<engineerTo>
+<item key="D1859799-DAA1-C913-68AE-EEB6306DEB26" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>250 CHAR</dataTypeSize>
+<ownDataTypeParameters>250 CHAR,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="nom apellido" id="1CF5F059-1262-D39A-CB28-9F05C3894B57">
+<createdBy>santi</createdBy>
+<createdTime>2024-12-08 23:40:04 UTC</createdTime>
+<ownerDesignName>data modeler modelo relacional</ownerDesignName>
+<engineerTo>
+<item key="D1859799-DAA1-C913-68AE-EEB6306DEB26" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>250 CHAR</dataTypeSize>
+<ownDataTypeParameters>250 CHAR,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="rol" id="B4667F07-68C2-E5F9-E9E2-E3ECC120C345">
+<createdBy>santi</createdBy>
+<createdTime>2024-12-08 23:40:34 UTC</createdTime>
+<ownerDesignName>data modeler modelo relacional</ownerDesignName>
+<engineerTo>
+<item key="D1859799-DAA1-C913-68AE-EEB6306DEB26" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50 CHAR</dataTypeSize>
+<ownDataTypeParameters>50 CHAR,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="cuenta correo" id="B5FA3789-1A1E-B81D-DB9E-CAD77FD414C4">
+<createdBy>santi</createdBy>
+<createdTime>2024-12-08 23:42:03 UTC</createdTime>
+<ownerDesignName>data modeler modelo relacional</ownerDesignName>
+<engineerTo>
+<item key="D1859799-DAA1-C913-68AE-EEB6306DEB26" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>250 CHAR</dataTypeSize>
+<ownDataTypeParameters>250 CHAR,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="cuenta contraseña" id="1E7DD19A-CC2B-A576-4D54-01D73AE7081E">
+<createdBy>santi</createdBy>
+<createdTime>2024-12-08 23:44:28 UTC</createdTime>
+<ownerDesignName>data modeler modelo relacional</ownerDesignName>
+<engineerTo>
+<item key="D1859799-DAA1-C913-68AE-EEB6306DEB26" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>250 CHAR</dataTypeSize>
+<ownDataTypeParameters>250 CHAR,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="977193CE-1726-EBB1-0A49-926CFF8BEDD3" name="USUARIO PK">
+<createdBy>santi</createdBy>
+<createdTime>2024-12-08 23:37:36 UTC</createdTime>
+<ownerDesignName>data modeler modelo relacional</ownerDesignName>
+<engineerTo>
+<item key="D1859799-DAA1-C913-68AE-EEB6306DEB26" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>AF0ED0F5-D8B2-0513-3C53-3040FE284B24</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

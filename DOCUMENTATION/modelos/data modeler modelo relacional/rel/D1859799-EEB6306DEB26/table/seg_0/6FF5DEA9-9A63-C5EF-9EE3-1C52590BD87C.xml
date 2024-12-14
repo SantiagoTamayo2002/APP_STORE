@@ -1,0 +1,86 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="6FF5DEA9-9A63-C5EF-9EE3-1C52590BD87C" name="PAGO">
+<createdBy>santi</createdBy>
+<createdTime>2024-12-09 00:02:16 UTC</createdTime>
+<generatorID>676471BA-BAF3-115F-A1DF-0A7C421B5DB5</generatorID>
+<ownerDesignName>data modeler modelo relacional</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="metodo_pago" id="4EDFD2B8-6A64-23F5-7A68-5C2F2286F5B2">
+<createdBy>santi</createdBy>
+<createdTime>2024-12-09 00:02:16 UTC</createdTime>
+<comment><![CDATA[puede ser de tipo: 
+- tarjeta
+- paypal
+- transferencia bancaria]]></comment>
+<generatorID>96BC6A39-7DD6-2D20-EED7-00B19F1862CE</generatorID>
+<ownerDesignName>data modeler modelo relacional</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50 CHAR</dataTypeSize>
+<ownDataTypeParameters>50 CHAR,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="estado" id="E8385266-C0F2-BBED-2A51-2C0587960683">
+<createdBy>santi</createdBy>
+<createdTime>2024-12-09 00:02:16 UTC</createdTime>
+<comment><![CDATA[puede ser de tipo:
+- Pendiente
+- Cancelado
+- Culminado]]></comment>
+<generatorID>E5B0769A-D17E-59D9-FCC9-6484C5BCBA79</generatorID>
+<ownerDesignName>data modeler modelo relacional</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50 CHAR</dataTypeSize>
+<ownDataTypeParameters>50 CHAR,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="PEDIDO_codigo" id="C6A73232-CA0D-0441-4F1A-9EA17F8B1625">
+<createdBy>santi</createdBy>
+<createdTime>2024-12-09 00:02:16 UTC</createdTime>
+<comment><![CDATA[clave única de la tabla pedidos ]]></comment>
+<generatorID>7163FE05-8F46-ECE0-F1D2-FCD408E97E6A</generatorID>
+<ownerDesignName>data modeler modelo relacional</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50 CHAR</dataTypeSize>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="F60D40F3-3EBB-2AAF-6372-D4A09B2572E3" referredColumn="39FFC879-EEED-4982-5987-F3AD811459A3"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="92E47C97-B556-972F-255B-C8B80278A72B" name="PAGO__IDX">
+<createdBy>santi</createdBy>
+<createdTime>2024-12-09 00:02:16 UTC</createdTime>
+<ownerDesignName>data modeler modelo relacional</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<relationGeneratorID>19870162-2CB8-0C33-89B4-5835C7E161AB</relationGeneratorID>
+<indexColumnUsage>
+<colUsage columnID="C6A73232-CA0D-0441-4F1A-9EA17F8B1625"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="8C6E7E2B-ECFA-4078-AF34-BED25A8355D2" name="PAGO_PEDIDO_FK">
+<createdBy>santi</createdBy>
+<createdTime>2024-12-09 00:02:16 UTC</createdTime>
+<generatorID>19870162-2CB8-0C33-89B4-5835C7E161AB</generatorID>
+<ownerDesignName>data modeler modelo relacional</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="C6A73232-CA0D-0441-4F1A-9EA17F8B1625"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

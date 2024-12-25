@@ -1,24 +1,18 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { initialPage } from './components/initialPage';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div>
+        <Routes>
+          <Route path="/"        Component ={initialPage}/>
+          <Route path="/login"   Component ={initialPage}/> //esto lo cambian con los componentes que quieran pintar
+          <Route path="/welcome" Component ={initialPage}/> //esto lo cambian con los componentes que quieran pintar
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

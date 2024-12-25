@@ -16,3 +16,13 @@ con esto ejecutan
 - src/app.py
 y se les ejecuta el server en el puerto 5000
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+REACT
+
+Para la app de react necesitan instalar dos modulos adicionales con el comando npm install
+- react-router-dom
+- --save-dev @babel/plugin-proposal-private-property-in-object
+o simplemente le dan a npm install y se les instala todas las dependencias que requiera la app
+
+
+

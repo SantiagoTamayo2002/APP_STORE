@@ -12,5 +12,66 @@
   padding: 20px;
 }
 
+/*hover del boton to guapo*/
+ 
+.hover-button {
+  color: white;
+  text-decoration: none;
+  border: none;
+  background: none;
+  font-weight: 600;
+}
+
+.hover-button::before {
+  margin-left: auto;
+}
+
+.hover-button::after, .hover-button::before {
+  content: '';
+  width: 0%;
+  height: 2px;
+  background: #3399ff;
+  display: block;
+  transition: 0.5s;
+}
+
+.hover-button:hover::after, .hover-button:hover::before {
+  width: 100%;
+}
+
+/* App.css */
+
+/* App.css */
+
+/* App.css */
+
+.navbar-gradient {
+  background: linear-gradient(90deg, #101828, #254061);
+}
+
+.home-gradient {
+  background: linear-gradient(140deg, #101828, #254061);
+}
+
+
+
+/* App.css */
+
+/* App.css */
+
+.neumorphism-tarjeta {
+  background: #101828; /* Mismo color de fondo */
+  box-shadow: 20px 20px 40px #0a1018, -20px -20px 40px #141f30; /* Sombras aún más intensificadas para el efecto de neumorfismo */
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.neumorphism-tarjeta:hover {
+  box-shadow: 15px 15px 30px #0a1018, -15px -15px 30px #141f30; /* Efecto al hacer hover */
+}
+
+
+
+
 
 

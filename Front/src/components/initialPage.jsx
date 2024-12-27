@@ -1,10 +1,11 @@
 import React from 'react';
 import '../App.css'; // Asegúrate de importar el archivo de estilos
 import { FaGithub, FaTwitter, FaLinkedin, FaInstagram } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 export const initialPage = () => (
     <div>
-        <div className='w-full h-[88vh] bg-[#101828] flex items-center justify-center'>
+        <div className='w-full h-[88vh] bg-[#101828] flex items-center justify-center navbar-gradient'>
             <div className='flex w-[1100px] h-[670px] rounded-lg'>
                 <div className='flex flex-col items-center justify-center w-[70%] h-full '>
                     <div className='flex-1 items-center justify-center w-full text-white'>
@@ -21,7 +22,7 @@ export const initialPage = () => (
                         <div className='flex justify-center mt-6'>
                             <div className='mx-8'>
                                 <button className='neumorphism-buttom text-[#3399ff] font-bold p-3 px-8 rounded-lg bg-white'>
-                                    Iniciar sesión
+                                    <Link to="/welcome">Iniciar sesión</Link>
                                 </button>
                             </div>
                             <div className='mx-8'>
@@ -35,7 +36,7 @@ export const initialPage = () => (
                 <div className='flex items-start justify-center w-[50%]'>
                     <div className=' w-full items-center justify-center flex py-24'>
                         <div>
-                            <img src="../src/assets/FranGGY.png" alt="" className='p-8 neumorphism-box'/>
+                            <img src="../src/assets/FranGGY.png" alt="" className='p-8 neumorphism-box navbar-gradient'/>
                         </div>
                     </div>
                 </div>

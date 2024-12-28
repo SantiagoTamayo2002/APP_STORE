@@ -1,9 +1,12 @@
+# -*- coding: utf-8 -*-
+
 from flask import Flask, jsonify
 import mariadb
 from flask_cors import CORS
 from connect import get_db_connection
-#//////////////////////////////////////////////////////////////////////////////////////////
-#/////////////////////////////////////////////////////////////////////////////////////////
+
+# //////////////////////////////////////////////////////////////////////////////////////////
+# /////////////////////////////////////////////////////////////////////////////////////////
 
 app = Flask(__name__)
 CORS(app)
@@ -21,26 +24,32 @@ def get_article_names():
         print("sin elementos encontrados")
         return []
 
-@app.route('/')
+
+@app.route("/")
 def index():
-    return '<h1> APP </h1>'
+    return "<h1> APP </h1>"
 
-@app.route('/add_user')
+
+@app.route("/add_user")
 def agregar_usuarios():
-    return 'usuario agregado de manera exitosa'
+    return "usuario agregado de manera exitosa"
 
-@app.route('/login')
+
+@app.route("/login")
 def login():
-    return 'usuario existente'
+    return "usuario existente"
 
-@app.route('/update_data_user')
+
+@app.route("/update_data_user")
 def actualizar_info_usuarios():
-    return 'credenciales actualizadas de manera correcta'
+    return "credenciales actualizadas de manera correcta"
 
-@app.route('/articles')
+
+@app.route("/articles")
 def show_articles():
     articles = get_article_names()
     return jsonify(articles)  # Retorna los nombres de los artículos en formato JSON
+
 
 if __name__ == "__main__":
     # Verificar conexión a la base de datos.

@@ -1,19 +1,21 @@
 /* App.css */
 .neumorphism-box {
   background: #101828;
-  box-shadow: 9px 9px 18px rgba(0, 0, 0, 0.3), -9px -9px 18px rgba(255, 255, 255, 0.1);
+  box-shadow: 9px 9px 18px rgba(0, 0, 0, 0.3),
+    -9px -9px 18px rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   padding: 20px;
 }
 
 .neumorphism-buttom {
-  box-shadow: 9px 9px 18px rgba(0, 0, 0, 0.3), -9px -9px 18px rgba(255, 255, 255, 0.1);
+  box-shadow: 9px 9px 18px rgba(0, 0, 0, 0.3),
+    -9px -9px 18px rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   padding: 20px;
 }
 
 /*hover del boton to guapo*/
- 
+
 .hover-button {
   color: white;
   text-decoration: none;
@@ -26,8 +28,9 @@
   margin-left: auto;
 }
 
-.hover-button::after, .hover-button::before {
-  content: '';
+.hover-button::after,
+.hover-button::before {
+  content: "";
   width: 0%;
   height: 2px;
   background: #3399ff;
@@ -35,7 +38,8 @@
   transition: 0.5s;
 }
 
-.hover-button:hover::after, .hover-button:hover::before {
+.hover-button:hover::after,
+.hover-button:hover::before {
   width: 100%;
 }
 
@@ -53,8 +57,6 @@
   background: linear-gradient(140deg, #101828, #254061);
 }
 
-
-
 /* App.css */
 
 /* App.css */
@@ -69,9 +71,3 @@
 .neumorphism-tarjeta:hover {
   box-shadow: 15px 15px 30px #0a1018, -15px -15px 30px #141f30; /* Efecto al hacer hover */
 }
-
-
-
-
-
-

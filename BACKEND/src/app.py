@@ -24,23 +24,43 @@ def get_article_names():
         return []
 
 
+def get_article_by_id(id):
+    conn = get_db_connection()
+    if conn:
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM articulo WHERE id = ?", (id,))
+        article = cur.fetchone()
+        conn.close()
+        return article
+    else:
+        print("Artículo no encontrado")
+        return None
+
+#/////////////////////////////////////////////////////////////////
+#/////////////////RUTAS DEL SERVIDOR//////////////////////////////
 @app.route("/")
 def index():
-    return "<h1> APP </h1>"
-
+    return "<h1> SI HAY SERVER :) </h1>"
 
 @app.route("/add_user")
 def agregar_usuarios():
     return "usuario agregado de manera exitosa"
 
+@app.route("/update_data_user")
+def actualizar_info_usuarios():
+    return "credenciales actualizadas de manera correcta"
+
+@app.route("/articles")
+def show_articles():
+    articles = get_article_names()
+    return jsonify(articles)  # Retorna los nombres de los artículos en formato JSON
 
 @app.route("/login", methods=["POST"])
 def login():
-    data = request.get_json()
-    correo = data.get("correo")
+    data       = request.get_json()
+    correo     = data.get("correo")
     contraseña = data.get("contraseña")
-
-    conn = get_db_connection()
+    conn       = get_db_connection()
     if not conn:
         return jsonify({"message": "Error al conectar con la base de datos"}), 500
 
@@ -86,28 +106,24 @@ def login():
 @app.route("/register", methods=["POST"])
 def register():
     data = request.get_json()
-
     nombre = data.get("nombre")
     apellido = data.get("apellido")
     dni = data.get("dni")
     correo = data.get("correo")
     contraseña = data.get("contraseña")
     contraseña2 = data.get("contraseña2")
-
     if contraseña != contraseña2:
         return jsonify({"message": "Las contraseñas no coinciden"}), 400
-
     # Generar el hash de la contraseña
     hashed_password = generate_password_hash(contraseña)
 
     conn = get_db_connection()
     if not conn:
         return jsonify({"message": "Error al conectar con la base de datos"}), 500
-
     try:
         cur = conn.cursor()
         cur.execute(
-            "INSERT INTO usuario (dni, nom_nombre, nom_apellido, rol, cuenta_correo, cuenta_contrasena) "
+            "INSERT INTO usuario (dni, nom_nombre, nom_apellido, rol, cuenta_correo, cuenta_contrasena)"
             "VALUES (?, ?, ?, ?, ?, ?)",
             (
                 dni,
@@ -128,19 +144,46 @@ def register():
         conn.close()
 
 
-@app.route("/update_data_user")
-def actualizar_info_usuarios():
-    return "credenciales actualizadas de manera correcta"
+@app.route("/articles/<int:id>", methods=["DELETE"])
+def delete_article(id):
+    conn = get_db_connection() # HAY CONEXION CON BD?
+    if not conn:
+        return jsonify({"message": "Error al conectar con la base de datos"}), 500
+    try:
+        cur = conn.cursor()
+        cur.execute("DELETE FROM articulo WHERE id = ?", (id,))
+        conn.commit()
+        return jsonify({"message": "Artículo eliminado con éxito"}), 200
+    except Exception as e:
+        return jsonify({"message": f"Error inesperado: {str(e)}"}), 500
+    finally:
+        conn.close()
+
+@app.route("/articles/<int:id>", methods=["PUT"])
+def update_article(id):
+    data = request.get_json()
+    conn = get_db_connection()
+    if not conn:
+        return jsonify({"message": "Error al conectar con la base de datos"}), 500
+    try:
+        cur = conn.cursor()
+        cur.execute(
+            f'''UPDATE articulo SET precio =       {data["precio"]}, 
+                                    descripcion = '{data["descripcion"]}', 
+                                    marca =       '{data["marca"]}', 
+                                    modelo =      '{data["modelo"]}', 
+                                    url_img =     '{data["url_img"]}' WHERE codigo_articulo = {id}''',
+        )
+        conn.commit()
+        return jsonify({"message": "Artículo actualizado con éxito"}), 200
+    finally:
+        conn.close()
 
 
-@app.route("/articles")
-def show_articles():
-    articles = get_article_names()
-    return jsonify(articles)  # Retorna los nombres de los artículos en formato JSON
 
+#/////////////////////////////////////////////////////////////////
 
 if __name__ == "__main__":
-    # Verificar conexión a la base de datos.
     connection = get_db_connection()
     if connection:
         connection.close()

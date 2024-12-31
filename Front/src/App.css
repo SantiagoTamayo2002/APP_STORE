@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
 /* App.css */
 .neumorphism-box {
   background: #101828;
@@ -43,11 +45,7 @@
   width: 100%;
 }
 
-/* App.css */
 
-/* App.css */
-
-/* App.css */
 
 .navbar-gradient {
   background: linear-gradient(90deg, #101828, #254061);
@@ -57,17 +55,19 @@
   background: linear-gradient(140deg, #101828, #254061);
 }
 
-/* App.css */
-
-/* App.css */
-
 .neumorphism-tarjeta {
-  background: #101828; /* Mismo color de fondo */
-  box-shadow: 20px 20px 40px #0a1018, -20px -20px 40px #141f30; /* Sombras aún más intensificadas para el efecto de neumorfismo */
+  background: #101828; 
+  box-shadow: 20px 20px 40px #0a1018, -20px -20px 40px #141f30; 
   border-radius: 12px;
   transition: all 0.3s ease;
 }
 
 .neumorphism-tarjeta:hover {
-  box-shadow: 15px 15px 30px #0a1018, -15px -15px 30px #141f30; /* Efecto al hacer hover */
+  box-shadow: 15px 15px 30px #0a1018, -15px -15px 30px #141f30; 
+}
+
+
+.custom-font {
+  font-family: 'Atkinson Hyperlegible', sans-serif;
+  font-weight: 400;
 }

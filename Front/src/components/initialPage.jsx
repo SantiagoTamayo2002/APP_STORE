@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 export const initialPage = () => (
     <div>
-        <div className='w-full h-[88vh] bg-[#101828] flex items-center justify-center navbar-gradient'>
+        <div className='w-full h-[92vh] bg-[#101828] flex items-center justify-center navbar-gradient'>
             <div className='flex w-[1100px] h-[670px] rounded-lg'>
                 <div className='flex flex-col items-center justify-center w-[70%] h-full '>
                     <div className='flex-1 items-center justify-center w-full text-white'>
@@ -22,12 +22,12 @@ export const initialPage = () => (
                         <div className='flex justify-center mt-6'>
                             <div className='mx-8'>
                                 <button className='neumorphism-buttom text-[#3399ff] font-bold p-3 px-8 rounded-lg bg-white'>
-                                    <Link to="/welcome">Iniciar sesión</Link>
+                                    <Link to="/login">Iniciar sesión</Link>
                                 </button>
                             </div>
                             <div className='mx-8'>
                                 <button className='neumorphism-buttom text-white p-3 px-9 rounded-lg bg-[#3399ff] font-bold'>
-                                    Registrarse
+                                    <Link to="/register">registrarse</Link>
                                 </button>
                             </div>
                         </div>
@@ -42,14 +42,14 @@ export const initialPage = () => (
                 </div>
             </div>
         </div>
-        <div className='bg-[#101828] text-white h-[12.1vh] justify-center flex border-t-2 border-white drop-shadow-[0_0_6px_rgba(51,153,255,1)]'>
-            <div className='flex-1'>
-                <div className='flex'>
-                    <div className='flex items-center justify-center h-[12vh] ml-[10px] '>
-                        <img className='h-[87%] rounded-full' src="../src/assets/logo_carrera.png" alt="imagen de la facultad de la energía de la universidad nacional de Loja" />
+        <div className='bg-[#101828] text-white h-[8vh] justify-center flex border-t-2  drop-shadow-[0_0_6px_rgba(51,153,255,1)]'>
+            <div className='flex-1 w-full'>
+                <div className='flex h-full justify-center'>
+                    <div className='flex items-center justify-center h-full mx-[20px] p-1'>
+                        <img className='h-full rounded-full' src="../src/assets/logo_carrera.png" alt="imagen de la facultad de la energía de la universidad nacional de Loja" />
                     </div>
-                    <div className='flex items-center justify-center w-[72%]'>
-                        <p className='text-center border-r-2 border-white pr-6'>
+                    <div className='flex items-center justify-center w-[72%] '>
+                        <p className='text-center border-r-2 text-sm'>
                         Un producto de estudiantes en la carrera de computación. <strong>Universidad nacional de Loja</strong> 
                         </p>
                     </div>
@@ -67,7 +67,7 @@ export const initialPage = () => (
             </div>
             <div className='flex-1 '>
                 <div className='flex w-full h-full items-center justify-center'>
-                    <div className='h-full flex items-center px-4'>
+                    <div className='h-full flex items-center px-4 text-sm'>
                         <a href="https://github.com/SantiagoTamayo2002/APP_STORE" target="_blank" rel="noopener noreferre"> <FaGithub size={40} /> </a>
                     </div>
                     <div className='flex h-full items-center px-4'>

@@ -4,7 +4,7 @@ import { IoIosArrowDropright } from "react-icons/io";
 
 const ArticleCard = ({ codigoArticulo, descripcion, marca, modelo, precio, imgUrl }) => {
     return (
-        <div className='w-[300px] h-[440px] neumorphism-tarjeta mt-14 flex flex-col transition duration-300 hover:scale-105'>
+        <div className='w-[300px] h-[440px] neumorphism-tarjeta mt-14 flex flex-col transition duration-300 hover:scale-105 hover-button'>
             <div className='flex-1'>
                 <div className='flex w-full h-full justify-center items-center'>
                     <div className='w-[80%] h-[85%] rounded-lg'>

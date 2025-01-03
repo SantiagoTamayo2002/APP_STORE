@@ -18,8 +18,8 @@ const ArticleCard = ({ codigoArticulo, descripcion, marca, modelo, precio, imgUr
                         <div className='flex items-center w-full h-[50px]  px-2'>
                             <p className='font-semibold text-white text-lg border-b-2'>{marca} <strong className='text-[#3399ff]'>{modelo}</strong></p>
                         </div>
-                        <div className='w-full h-[100px] p-2'>
-                            <p className='text-white text-sm custom-font'>
+                        <div className='w-full h-[100px] p-2 '>
+                            <p className='text-white text-sm custom-font line-clamp-3'>
                                 {descripcion}
                             </p>
                         </div>

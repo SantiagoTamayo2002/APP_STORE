@@ -26,7 +26,12 @@ const Navbar = () => {
                                     Categorías
                                 </li>
                                 <li className="inline-block mx-10 hover-button neumorphism-box">Contacto</li>
-                                <li className="inline-block mx-10 text-xl"><BsSearch /></li>
+                                <div className="flex items-center">
+                                    <li className="inline-block mx-10 text-xl"><BsSearch /></li>
+                                    <div className="border ">
+                                        <label htmlFor="" className="bg-white rounded-lg text-black p-2">SEARCH</label>
+                                    </div>
+                                </div>
                             </ul>
                         </div>
                     </div>

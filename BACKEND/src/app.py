@@ -151,13 +151,14 @@ def delete_article(id):
         return jsonify({"message": "Error al conectar con la base de datos"}), 500
     try:
         cur = conn.cursor()
-        cur.execute("DELETE FROM articulo WHERE id = ?", (id,))
+        cur.execute("DELETE FROM articulo WHERE codigo_articulo = ?", (id,))
         conn.commit()
         return jsonify({"message": "Artículo eliminado con éxito"}), 200
     except Exception as e:
         return jsonify({"message": f"Error inesperado: {str(e)}"}), 500
     finally:
         conn.close()
+
 
 @app.route("/articles/<int:id>", methods=["PUT"])
 def update_article(id):
@@ -178,8 +179,6 @@ def update_article(id):
         return jsonify({"message": "Artículo actualizado con éxito"}), 200
     finally:
         conn.close()
-
-
 
 #/////////////////////////////////////////////////////////////////
 

@@ -6,7 +6,7 @@ CREATE TABLE usuario (
     nom_apellido      VARCHAR(250) NOT NULL,
     rol               VARCHAR(20)  NOT NULL,
     cuenta_correo     VARCHAR(250) NOT NULL UNIQUE,
-    cuenta_contrasena VARCHAR(20) NOT NULL,
+    cuenta_contrasena VARCHAR(20) NOT NULL
 );
 
 
@@ -37,7 +37,7 @@ CREATE TABLE tarjeta (
 
 CREATE TABLE inventario (
     codigo_inventario INT(9) PRIMARY KEY AUTO_INCREMENT,
-    cantidad          INT(6) NOT NULL,
+    cantidad          INT(6) NOT NULL
 );
 
 

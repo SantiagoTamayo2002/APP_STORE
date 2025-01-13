@@ -36,31 +36,36 @@ def get_article_by_id(id):
         print("Artículo no encontrado")
         return None
 
-#/////////////////////////////////////////////////////////////////
-#/////////////////RUTAS DEL SERVIDOR//////////////////////////////
+
+# /////////////////////////////////////////////////////////////////
+# /////////////////RUTAS DEL SERVIDOR//////////////////////////////
 @app.route("/")
 def index():
     return "<h1> SI HAY SERVER :) </h1>"
+
 
 @app.route("/add_user")
 def agregar_usuarios():
     return "usuario agregado de manera exitosa"
 
+
 @app.route("/update_data_user")
 def actualizar_info_usuarios():
     return "credenciales actualizadas de manera correcta"
+
 
 @app.route("/articles")
 def show_articles():
     articles = get_article_names()
     return jsonify(articles)  # Retorna los nombres de los artículos en formato JSON
 
+
 @app.route("/login", methods=["POST"])
 def login():
-    data       = request.get_json()
-    correo     = data.get("correo")
+    data = request.get_json()
+    correo = data.get("correo")
     contraseña = data.get("contraseña")
-    conn       = get_db_connection()
+    conn = get_db_connection()
     if not conn:
         return jsonify({"message": "Error al conectar con la base de datos"}), 500
 
@@ -82,11 +87,11 @@ def login():
                 return (
                     jsonify(
                         {
+                            "success": True,
                             "message": "Inicio de sesión exitoso",
                             "user": {
-                                "nombre": user[0],
-                                "apellido": user[1],
-                                "dni": user[2],
+                                "correo": "HolaMundo@gmail.com",
+                                "nombre": "Usuario de Ejemplo",
                             },
                         }
                     ),
@@ -146,7 +151,7 @@ def register():
 
 @app.route("/articles/<int:id>", methods=["DELETE"])
 def delete_article(id):
-    conn = get_db_connection() # HAY CONEXION CON BD?
+    conn = get_db_connection()  # HAY CONEXION CON BD?
     if not conn:
         return jsonify({"message": "Error al conectar con la base de datos"}), 500
     try:
@@ -169,18 +174,19 @@ def update_article(id):
     try:
         cur = conn.cursor()
         cur.execute(
-            f'''UPDATE articulo SET precio =       {data["precio"]}, 
+            f"""UPDATE articulo SET precio =       {data["precio"]}, 
                                     descripcion = '{data["descripcion"]}', 
                                     marca =       '{data["marca"]}', 
                                     modelo =      '{data["modelo"]}', 
-                                    url_img =     '{data["url_img"]}' WHERE codigo_articulo = {id}''',
+                                    url_img =     '{data["url_img"]}' WHERE codigo_articulo = {id}""",
         )
         conn.commit()
         return jsonify({"message": "Artículo actualizado con éxito"}), 200
     finally:
         conn.close()
 
-#/////////////////////////////////////////////////////////////////
+
+# /////////////////////////////////////////////////////////////////
 
 if __name__ == "__main__":
     connection = get_db_connection()

@@ -1,5 +1,5 @@
 import React from 'react';
-import '../App.css'; // Asegúrate de importar el archivo de estilos
+import '../App.css'; 
 import { FaGithub, FaTwitter, FaLinkedin, FaInstagram } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 

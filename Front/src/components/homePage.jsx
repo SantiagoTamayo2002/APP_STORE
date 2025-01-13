@@ -2,14 +2,37 @@ import Navbar from './navbar';
 import React, { useState, useEffect } from 'react';
 import ArticleCard from './article_card';
 import '../App.css';
+import { useAuth } from './AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const HomePage = () => {
     const [articles, setArticles] = useState([]); // Inicializamos el estado vacío
+    const { logout } = useAuth(); // Traemos la función logout del contexto de autenticación
+    const navigate = useNavigate();
+    const [usuario, setUsuario] = useState(() => {
+        // Cargar usuario desde localStorage al iniciar
+        const storedUser = localStorage.getItem('usuario');
+        return storedUser ? JSON.parse(storedUser) : null;
+    });
+
+    useEffect(() => {
+        // Redirigir automáticamente si ya hay un usuario autenticado
+        if (!usuario) {
+            navigate('/');
+        }
+    }, [usuario, navigate]);
+
+    const handleLogout = () => {
+        setUsuario(null);
+        localStorage.removeItem('usuario');
+        logout(); // Limpiar el estado global de autenticación
+        navigate('/'); // Redirigir al inicio
+    };
 
     useEffect(() => {
         fetch('http://localhost:5000/articles') // retorna una promesa
             .then(response => response.json())
-            .then(data => {setArticles(data);})
+            .then(data => { setArticles(data); })
             .catch(error => console.error(error));
     }, []); // El segundo argumento es un arreglo vacío para que solo se ejecute una vez
 
@@ -29,6 +52,7 @@ const HomePage = () => {
             <Navbar />
             <div className='bg-[#101828] flex justify-center'>
                 <div className='flex w-full mt-24'>
+                    {/* Render de las columnas de artículos */}
                     <div className='flex-1 border-r-2 border-[#3399ff]'>
                         <div className='flex flex-col justify-center items-center'>
                             {column1.map((article, index) => (
@@ -91,6 +115,18 @@ const HomePage = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Botón de cerrar sesión */}
+            {usuario && (
+                <div className="flex justify-center mt-4">
+                    <button
+                        onClick={handleLogout}
+                        className="px-6 py-3 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition duration-300"
+                    >
+                        Cerrar sesión
+                    </button>
+                </div>
+            )}
         </div>
     );
 };

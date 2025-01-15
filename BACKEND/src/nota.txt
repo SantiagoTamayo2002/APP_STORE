@@ -1,2 +1,4 @@
 Si no les importa bien con pip istall flask etc, hagan Ctrl + Shift + P, Python: Select Interpreter y seleccionen su virtualización virtual 
 (agrego este txt tambien porque se me obliga... git feelings)
+
+

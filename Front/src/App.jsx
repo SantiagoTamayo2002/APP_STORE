@@ -8,6 +8,7 @@ import HomePage from './components/homePage';
 import ArticleCard from './components/article_card';
 import Login from './components/login';
 import Register from './components/register';
+import Formulario from './components/formulario';
 
 function App() {
   return (
@@ -18,12 +19,10 @@ function App() {
             <Route path="/" element={<InitialPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/form" element={<Formulario />} />
             <Route path="/welcome" element={<PrivateRoute><HomePage /></PrivateRoute>} />
             <Route path="/articles" element={<PrivateRoute><ArticlesAdmin /></PrivateRoute>} />
             <Route path="/tarjet" element={<PrivateRoute><ArticleCard /></PrivateRoute>} />
-
-
-
           </Routes>
         </div>
       </Router>

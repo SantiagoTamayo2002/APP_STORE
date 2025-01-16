@@ -22,13 +22,6 @@ const HomePage = () => {
         }
     }, [usuario, navigate]);
 
-    const handleLogout = () => {
-        setUsuario(null);
-        localStorage.removeItem('usuario');
-        logout(); // Limpiar el estado global de autenticación
-        navigate('/'); // Redirigir al inicio
-    };
-
     useEffect(() => {
         fetch('http://localhost:5000/articles') // retorna una promesa
             .then(response => response.json())
@@ -48,7 +41,7 @@ const HomePage = () => {
     const [column1, column2, column3, column4] = divideArticles(articles, 4);
 
     return (
-        <div>
+        <div className='overflow-hidden'>
             <Navbar />
             <div className='bg-[#101828] flex justify-center'>
                 <div className='flex w-full mt-24'>
@@ -115,18 +108,6 @@ const HomePage = () => {
                     </div>
                 </div>
             </div>
-
-            {/* Botón de cerrar sesión */}
-            {usuario && (
-                <div className="flex justify-center mt-4">
-                    <button
-                        onClick={handleLogout}
-                        className="px-6 py-3 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition duration-300"
-                    >
-                        Cerrar sesión
-                    </button>
-                </div>
-            )}
         </div>
     );
 };

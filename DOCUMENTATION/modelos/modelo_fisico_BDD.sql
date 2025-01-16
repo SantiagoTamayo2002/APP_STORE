@@ -43,7 +43,7 @@ CREATE TABLE inventario (
 
 CREATE TABLE articulo (
     codigo_articulo     INT(9)        PRIMARY KEY AUTO_INCREMENT,
-    codigo_inventario   INT(9)        NOT NULL,
+    codigo_inventario   INT(9),
     precio              DECIMAL(9, 2) NOT NULL,
     descripcion         TEXT,
     marca               VARCHAR(60),
@@ -60,7 +60,7 @@ CREATE TABLE factura (
 
 
 CREATE TABLE pago (
-    codigo_pago  INT(9)      PRIMARY KEY,
+    codigo_pago  INT(9)      PRIMARY KEY AUTO_INCREMENT,
     metodo_pago  VARCHAR(20) NOT NULL,
     estado       VARCHAR(20) NOT NULL
 );
@@ -78,7 +78,7 @@ CREATE TABLE pedido (
 
 
 CREATE TABLE detalle_pedido (
-    id_detalle      INT(9),
+    id_detalle      INT(9) PRIMARY KEY AUTO_INCREMENT,
     N_articulos     INT(5) NOT NULL,
     codigo_pedido   INT(9) NOT NULL,
     codigo_articulo INT(9) NOT NULL,

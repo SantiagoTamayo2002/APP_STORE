@@ -93,7 +93,7 @@ CREATE TABLE oferta (
     tipo         VARCHAR(60)  NOT NULL,
     valor        DECIMAL(9,2) NOT NULL,
     fecha_inicio DATE NOT NULL,
-    fecha_fin    DATE NOT NULL,
+    fecha_fin    DATE NOT NULL
 );
 
 

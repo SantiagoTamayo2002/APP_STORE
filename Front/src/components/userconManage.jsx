@@ -29,7 +29,7 @@ const UserconManage = () => {
 
 
     return (
-        <div className="rounded-full  neumorphism-circle  flex text-5xl text-[#c4c6c9]  drop-shadow-[0_0_6px_rgba(51,153,255,1)]border-[#3399ff]"
+        <div className="rounded-full  neumorphism-circle  flex text-5xl text-[#c4c6c9]  drop-shadow-[0_0_6px_rgba(51,153,255,1)]border-[#3399ff] cursor-pointer"
             onClick={toggleDiv}>
             <FaCircleUser />
             {mostrardiv && 

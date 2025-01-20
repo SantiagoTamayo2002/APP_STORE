@@ -1,6 +1,6 @@
 import React from 'react';
 import '../App.css'; 
-import { FaGithub, FaTwitter, FaLinkedin, FaInstagram } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaInstagram } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 export const initialPage = () => (

@@ -3,6 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import '../App.css';
 import { BsSearch } from "react-icons/bs";
+import UserconManage from "./userconManage";
 
 
 const Navbar = () => {
@@ -25,19 +26,25 @@ const Navbar = () => {
                                 <li className="inline-block mx-10 hover-button neumorphism-box">
                                     Categorías
                                 </li>
-                                <li className="inline-block mx-10 hover-button neumorphism-box">Contacto</li>
+                                <li className="inline-block mx-10 hover-button neumorphism-box">Ofertas</li>
                                 <div className="flex items-center">
                                     <li className="inline-block mx-10 text-xl"><BsSearch /></li>
-                                    <div className="border ">
-                                        <label htmlFor="" className="bg-white rounded-lg text-black p-2">SEARCH</label>
-                                    </div>
                                 </div>
                             </ul>
                         </div>
                     </div>
                 </div>
-                <div className="flex-1">
+                <div className="flex-1 text-white">
+                    <div className="flex w-full h-full justify-center items-center">
+                        <div className="h-full flex-1"></div>
+                        <div className="h-full flex-1"></div>
+                        <div className="h-full flex-1">
+                            <div className="flex items-center justify-center h-full mr-4 ">
+                                <UserconManage />
+                            </div>
 
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

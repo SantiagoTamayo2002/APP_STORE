@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Button from './button';
+import { ToastContainer, toast } from 'react-toastify';
 const API = 'http://localhost:5000';
 
 const ArticlesAdmin = () => {
@@ -7,6 +8,9 @@ const ArticlesAdmin = () => {
     const [articles, setArticles] = useState([]);
     const [articuloObtenido, setEditingArticle] = useState(null);
     const [formulario, setFormulario] = useState(false);
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    const notify = () => toast("Artículo eliminado con éxito");
 
     ////////////////////////////////////////////////////////////////////////////////////
 
@@ -76,9 +80,15 @@ const ArticlesAdmin = () => {
 
     ////////////////////////////////////////////////////////////////////////////////////
 
-    const deleteArticle = (id) => {
+    const setArticle = () => {
 
-        fetch(`API/articles/${id}`, {
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////
+
+    const deleteArticle = (id) => {
+        console.log("articulo con id " + id)
+        fetch(`${API}/articles/${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
@@ -91,6 +101,7 @@ const ArticlesAdmin = () => {
             }
             return response.json();
         })
+
     }
 
     ////////////////////////////////////////////////////////////////////////////////////
@@ -99,6 +110,9 @@ const ArticlesAdmin = () => {
         <div className='bg-[#101828] h-full w-full '>
             <div className='bg-[#101828] h-full w-full text-white'>
                 <h1>Artículos</h1>
+                <div>
+                    <Button text='Agregar Artículo' onClick={() => setEditingArticle({})}/>
+                </div>
                 <table className='table-auto w-[90%] m-auto'>
                     <thead>
                         <tr>
@@ -127,6 +141,7 @@ const ArticlesAdmin = () => {
                                 <td className=''>
                                     <Button text='Editar'   onClick={() => handleEditClick(article)}/>
                                     <Button text='Eliminar' onClick={() => deleteArticle(article[0])} color="red"/>
+                                    <ToastContainer />
                                 </td>
                             </tr>
                         ))}
@@ -221,8 +236,7 @@ const ArticlesAdmin = () => {
                                         </div>
                                     </form>
                                 </div>
-                            </div>
-                            
+                            </div>  
                         </div>
                     </div>
                 )}

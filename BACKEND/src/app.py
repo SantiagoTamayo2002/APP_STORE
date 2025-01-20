@@ -186,6 +186,72 @@ def update_article(id):
         conn.close()
 
 
+    
+@app.route("/ofertas", methods=["POST"])
+def create_offer():
+    data = request.get_json()
+    nombre = data.get("nombre")
+    tipo = data.get("tipo")
+    valor = data.get("valor")
+    fecha_inicio = data.get("fecha_inicio")
+    fecha_fin = data.get("fecha_fin")
+
+    conn = get_db_connection()
+    if not conn:
+        return jsonify({"message": "Error al conectar con la base de datos"}), 500
+
+    try:
+        cur = conn.cursor()
+        cur.execute("""
+            INSERT INTO oferta (id_oferta, nombre, tipo, valor, fecha_inicio, fecha_fin)
+            VALUES (NULL, ?, ?, ?, ?, ?)
+        """, (nombre, tipo, valor, fecha_inicio, fecha_fin))
+        conn.commit()
+        return jsonify({"message": "Oferta creada con éxito"}), 201
+    except Exception as e:
+        return jsonify({"message": f"Error inesperado: {str(e)}"}), 500
+    finally:
+        conn.close()
+
+@app.route("/ofertas", methods=["GET"])
+def get_active_offers():
+    conn = get_db_connection()
+    if not conn:
+        return jsonify({"message": "Error al conectar con la base de datos"}), 500
+
+    try:
+        cur = conn.cursor()
+        cur.execute("""
+            SELECT id_oferta, nombre, tipo, valor, fecha_inicio, fecha_fin
+            FROM oferta
+            WHERE fecha_inicio <= CURDATE() AND fecha_fin >= CURDATE()
+        """)
+        ofertas = cur.fetchall()
+        return jsonify(ofertas), 200
+    except Exception as e:
+        return jsonify({"message": f"Error inesperado: {str(e)}"}), 500
+    finally:
+        conn.close()
+
+@app.route("/ofertas_page")
+def offers_page():
+    conn = get_db_connection()
+    if not conn:
+        return jsonify({"message": "Error al conectar con la base de datos"}), 500
+
+    try:
+        cur = conn.cursor()
+        cur.execute("""
+            SELECT id_oferta, nombre, tipo, valor, fecha_inicio, fecha_fin
+            FROM oferta
+            WHERE fecha_inicio <= CURDATE() AND fecha_fin >= CURDATE()
+        """)
+        ofertas = cur.fetchall()
+        return render_template('ofertas.html', ofertas=ofertas)
+    except Exception as e:
+        return jsonify({"message": f"Error inesperado: {str(e)}"}), 500
+    finally:
+        conn.close()
 # /////////////////////////////////////////////////////////////////
 
 if __name__ == "__main__":

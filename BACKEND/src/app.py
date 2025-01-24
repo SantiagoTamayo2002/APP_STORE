@@ -185,16 +185,15 @@ def update_article(id):
     finally:
         conn.close()
 
-
-    
-@app.route("/ofertas", methods=["POST"])
-def create_offer():
+@app.route("/add_offer", methods=["POST"])
+def add_offer():
     data = request.get_json()
     nombre = data.get("nombre")
     tipo = data.get("tipo")
     valor = data.get("valor")
     fecha_inicio = data.get("fecha_inicio")
     fecha_fin = data.get("fecha_fin")
+    articulos = data.get("articulos")  # Lista de códigos de artículos asociados a la oferta
 
     conn = get_db_connection()
     if not conn:
@@ -202,58 +201,161 @@ def create_offer():
 
     try:
         cur = conn.cursor()
-        cur.execute("""
-            INSERT INTO oferta (id_oferta, nombre, tipo, valor, fecha_inicio, fecha_fin)
-            VALUES (NULL, ?, ?, ?, ?, ?)
-        """, (nombre, tipo, valor, fecha_inicio, fecha_fin))
+
+        # Insertar la oferta
+        cur.execute(
+            "INSERT INTO oferta (nombre, tipo, valor, fecha_inicio, fecha_fin) VALUES (?, ?, ?, ?, ?)",
+            (nombre, tipo, valor, fecha_inicio, fecha_fin)
+        )
         conn.commit()
-        return jsonify({"message": "Oferta creada con éxito"}), 201
+
+        # Obtener el ID de la oferta recién insertada
+        cur.execute("SELECT LAST_INSERT_ID()")
+        id_oferta = cur.fetchone()[0]
+
+        # Insertar los artículos asociados a la oferta
+        for articulo_id in articulos:
+            cur.execute(
+                "INSERT INTO detalle_oferta (id_oferta, id_articulo) VALUES (?, ?)",
+                (id_oferta, articulo_id)
+            )
+
+        conn.commit()
+        return jsonify({"message": "Oferta creada exitosamente"}), 201
+
     except Exception as e:
         return jsonify({"message": f"Error inesperado: {str(e)}"}), 500
     finally:
         conn.close()
 
-@app.route("/ofertas", methods=["GET"])
-def get_active_offers():
+@app.route("/update_offer/<int:id>", methods=["PUT"])
+def update_offer(id):
+    data = request.get_json()
+    nombre = data.get("nombre")
+    tipo = data.get("tipo")
+    valor = data.get("valor")
+    fecha_inicio = data.get("fecha_inicio")
+    fecha_fin = data.get("fecha_fin")
+    articulos = data.get("articulos")  # Lista de códigos de artículos asociados a la oferta
+
     conn = get_db_connection()
     if not conn:
         return jsonify({"message": "Error al conectar con la base de datos"}), 500
 
     try:
         cur = conn.cursor()
-        cur.execute("""
-            SELECT id_oferta, nombre, tipo, valor, fecha_inicio, fecha_fin
-            FROM oferta
-            WHERE fecha_inicio <= CURDATE() AND fecha_fin >= CURDATE()
-        """)
-        ofertas = cur.fetchall()
-        return jsonify(ofertas), 200
+
+        # Actualizar los datos de la oferta
+        cur.execute(
+            """UPDATE oferta 
+               SET nombre = ?, tipo = ?, valor = ?, fecha_inicio = ?, fecha_fin = ? 
+               WHERE id_oferta = ?""",
+            (nombre, tipo, valor, fecha_inicio, fecha_fin, id)
+        )
+
+        # Eliminar los artículos existentes relacionados con esta oferta
+        cur.execute("DELETE FROM detalle_oferta WHERE id_oferta = ?", (id,))
+
+        # Insertar los nuevos artículos asociados a la oferta
+        for articulo_id in articulos:
+            cur.execute(
+                "INSERT INTO detalle_oferta (id_oferta, id_articulo) VALUES (?, ?)",
+                (id, articulo_id)
+            )
+
+        conn.commit()
+        return jsonify({"message": "Oferta actualizada exitosamente"}), 200
+
     except Exception as e:
         return jsonify({"message": f"Error inesperado: {str(e)}"}), 500
     finally:
         conn.close()
 
-@app.route("/ofertas_page")
-def offers_page():
+@app.route("/delete_offer/<int:id>", methods=["DELETE"])
+def delete_offer(id):
     conn = get_db_connection()
     if not conn:
         return jsonify({"message": "Error al conectar con la base de datos"}), 500
-
+    
     try:
         cur = conn.cursor()
-        cur.execute("""
-            SELECT id_oferta, nombre, tipo, valor, fecha_inicio, fecha_fin
-            FROM oferta
-            WHERE fecha_inicio <= CURDATE() AND fecha_fin >= CURDATE()
-        """)
-        ofertas = cur.fetchall()
-        return render_template('ofertas.html', ofertas=ofertas)
+
+        # Eliminar los artículos relacionados con esta oferta
+        cur.execute("DELETE FROM detalle_oferta WHERE id_oferta = ?", (id,))
+
+        # Eliminar la oferta
+        cur.execute("DELETE FROM oferta WHERE id_oferta = ?", (id,))
+        conn.commit()
+
+        return jsonify({"message": "Oferta eliminada con éxito"}), 200
+
     except Exception as e:
         return jsonify({"message": f"Error inesperado: {str(e)}"}), 500
     finally:
         conn.close()
+
+
+@app.route("/get_offers", methods=["GET"])
+def get_offers():
+    conn = get_db_connection()
+    if not conn:
+        return jsonify({"message": "Error al conectar con la base de datos"}), 500
+    
+    try:
+        cur = conn.cursor()
+        # Consulta que trae todas las ofertas con sus artículos relacionados, incluyendo el precio original
+        cur.execute("""
+            SELECT o.id_oferta, o.nombre, o.tipo, o.valor, o.fecha_inicio, o.fecha_fin, 
+                   a.codigo_articulo, a.descripcion, a.url_img, a.precio
+            FROM oferta o
+            JOIN detalle_oferta dof ON o.id_oferta = dof.id_oferta
+            JOIN articulo a ON dof.id_articulo = a.codigo_articulo
+        """)
+        
+        offers = cur.fetchall()
+        formatted_offers = []
+        current_offer = None
+
+        for offer in offers:
+            if current_offer is None or current_offer["id_oferta"] != offer[0]:
+                if current_offer:
+                    formatted_offers.append(current_offer)
+                current_offer = {
+                    "id_oferta": offer[0],
+                    "nombre": offer[1],
+                    "tipo": offer[2],
+                    "valor": offer[3],
+                    "fecha_inicio": offer[4],
+                    "fecha_fin": offer[5],
+                    "articulos": []
+                }
+            
+            original_price = offer[9]
+            discount_percentage = round(offer[3], 2)  # Valor ya representa el porcentaje
+            discount_price = original_price - (original_price * (discount_percentage / 100))
+            
+            
+            current_offer["articulos"].append({
+                "codigo_articulo": offer[6],
+                "descripcion": offer[7],
+                "url_img": offer[8],
+                "precio_original": original_price,
+                "precio_oferta": round(discount_price, 2),
+                "descuento_porcentaje": discount_percentage
+            })
+        
+        if current_offer:
+            formatted_offers.append(current_offer)
+
+        return jsonify(formatted_offers), 200
+    except Exception as e:
+        return jsonify({"message": f"Error inesperado: {str(e)}"}), 500
+    finally:
+        conn.close()
+
+
+
 # /////////////////////////////////////////////////////////////////
-
 if __name__ == "__main__":
     connection = get_db_connection()
     if connection:

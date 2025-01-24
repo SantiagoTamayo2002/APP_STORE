@@ -9,6 +9,8 @@ import ArticleCard from './components/article_card';
 import Login from './components/login';
 import Register from './components/register';
 import Formulario from './components/formulario';
+import Offers from './components/offers';
+import OfferAdmin from './components/addoffers';
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
             <Route path="/welcome" element={<PrivateRoute><HomePage /></PrivateRoute>} />
             <Route path="/articles" element={<PrivateRoute><ArticlesAdmin /></PrivateRoute>} />
             <Route path="/tarjet" element={<PrivateRoute><ArticleCard /></PrivateRoute>} />
+            <Route path="/offers" element={<PrivateRoute><Offers/></PrivateRoute>} />
+            <Route path="/addoffers" element={<PrivateRoute><OfferAdmin /></PrivateRoute>} />
           </Routes>
         </div>
       </Router>

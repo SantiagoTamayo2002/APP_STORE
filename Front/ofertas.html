@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ofertas</title>
+</head>
+<body>
+    <h1>Ofertas Disponibles</h1>
+    <table>
+        <tr>
+            <th>Artículo</th>
+            <th>Precio con descuento</th>
+            <th>Fecha de inicio</th>
+            <th>Fecha de fin</th>
+        </tr>
+        {% for oferta in ofertas %}
+        <tr>
+            <td>{{ oferta[1] }}</td>
+            <td>{{ oferta[2] }}</td>
+            <td>{{ oferta[3] }}</td>
+            <td>{{ oferta[4] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

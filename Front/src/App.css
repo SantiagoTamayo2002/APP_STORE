@@ -112,3 +112,165 @@
   max-width: 170px;
 }/* Ajusta este valor según necesites */
 
+/*OFERTA*/
+.offers-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #101828; /* Color de fondo para la página */
+  color: #fbfbfd;
+  padding: 20px;
+}
+
+.offers-title {
+  font-size: 2em;
+  font-weight: bold;
+  color: #3399ff; /* Título en azul */
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.offers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.offers-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.offer-card {
+  background: #1e2a38;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.3), -10px -10px 20px rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s ease;
+  min-height: 300px;
+}
+
+.offer-card:hover {
+  transform: translateY(-5px); /* Le da un efecto de hover más atractivo */
+}
+
+.offer-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.offer-name {
+  color: #3399ff;
+  font-size: 1.5em;
+}
+
+.offer-type {
+  font-size: 1.2em;
+}
+
+.offer-value {
+  margin-top: 10px;
+}
+
+.offer-date {
+  margin-top: 10px;
+}
+
+.offer-articles-title {
+  margin-top: 15px;
+  font-weight: 600;
+}
+
+.offer-articles-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.offer-article {
+  background-color: #2a3b4c;
+  padding: 5px;
+  margin-bottom: 5px;
+  border-radius: 8px;
+  color: #ffffff;
+}
+
+@media screen and (max-width: 768px) {
+  .offer-card {
+    width: 100%;
+  }
+}
+
+.article-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px; /* Opcional, para redondear bordes */
+}
+
+form label {
+  font-size: 0.7rem; /* Tamaño de texto más pequeño */
+  color: #e0e0e0; /* Color para buena visibilidad */
+}
+
+form input {
+  width: 100%;
+  padding: 5px;
+  margin-bottom: 10px;
+  border: 1px solid #3399ff;
+  border-radius: 6px;
+  background: #1e2a38;
+  color: #f0f0f0;
+}
+
+/* Añadir un poco de estilo al contenedor del formulario */
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.offer-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* Espaciado entre los botones */
+  margin-top: 20px; /* Separación del contenido */
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-between; /* Distribuir botones equitativamente */
+  gap: 15px; /* Separar botones */
+  margin-top: 20px; /* Espaciado superior */
+}
+
+.offer-edit-button {
+  background-color: #4caf50; /* Verde atractivo */
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.offer-edit-button:hover {
+  background-color: #45a049; /* Verde más oscuro al pasar el mouse */
+}
+
+.offer-delete-button {
+  background-color: #f44336; /* Rojo para el botón de eliminar */
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.offer-delete-button:hover {
+  background-color: #d32f2f; /* Rojo más oscuro al pasar el mouse */
+}

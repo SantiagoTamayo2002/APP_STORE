@@ -21,12 +21,14 @@ const Navbar = () => {
                         <div className=" w-[90%] flex items-center justify-center">
                             <ul className="flex items-center justify-between text-sm custom-font"> 
                                 <li className="inline-block mx-10 hover-button neumorphism-box">
-                                    <Link to="/">Inicio</Link>
+                                    <Link to="/welcome">Inicio</Link>
                                 </li>
                                 <li className="inline-block mx-10 hover-button neumorphism-box">
                                     Categorías
                                 </li>
-                                <li className="inline-block mx-10 hover-button neumorphism-box">Ofertas</li>
+                                <li className="inline-block mx-10 hover-button neumorphism-box">
+                                    <Link to ="/offers">Ofertas</Link>
+                                    </li>
                                 <div className="flex items-center">
                                     <li className="inline-block mx-10 text-xl"><BsSearch /></li>
                                 </div>

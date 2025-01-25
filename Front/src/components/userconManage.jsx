@@ -39,6 +39,10 @@ const UserconManage = () => {
                     <p className="my-2 p-1 hover-button-custom">Historial de pedidos</p>
                     <p className="my-2 p-1 hover-button-custom">
                         <Link to="/articles">Panel de administración</Link>
+                       
+                    </p>
+                    <p className="my-2 p-1 hover-button-custom">
+                        <Link to="/addoffers">Agregar Ofertas</Link>
                     </p>
                     {usuario && (
                     <p onClick={handleLogout} className="my-2 p-1 hover-button-custom">

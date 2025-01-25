@@ -11,6 +11,7 @@ import Register from './components/register';
 import Formulario from './components/formulario';
 import Offers from './components/offers';
 import OfferAdmin from './components/addoffers';
+import ShoppingCart from './components/ShoppingCart';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
             <Route path="/tarjet" element={<PrivateRoute><ArticleCard /></PrivateRoute>} />
             <Route path="/offers" element={<PrivateRoute><Offers/></PrivateRoute>} />
             <Route path="/addoffers" element={<PrivateRoute><OfferAdmin /></PrivateRoute>} />
+            <Route path="/shoppingCart" element={<ShoppingCart />} />
           </Routes>
         </div>
       </Router>

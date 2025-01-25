@@ -1,10 +1,9 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
 import '../App.css';
 import { BsSearch } from "react-icons/bs";
+import { FaShoppingCart } from "react-icons/fa";
 import UserconManage from "./userconManage";
-
 
 const Navbar = () => {
     return (
@@ -28,10 +27,8 @@ const Navbar = () => {
                                 </li>
                                 <li className="inline-block mx-10 hover-button neumorphism-box">
                                     <Link to ="/offers">Ofertas</Link>
-                                    </li>
-                                <div className="flex items-center">
-                                    <li className="inline-block mx-10 text-xl"><BsSearch /></li>
-                                </div>
+                                </li>
+                                
                             </ul>
                         </div>
                     </div>
@@ -41,10 +38,15 @@ const Navbar = () => {
                         <div className="h-full flex-1"></div>
                         <div className="h-full flex-1"></div>
                         <div className="h-full flex-1">
-                            <div className="flex items-center justify-center h-full mr-4 ">
-                                <UserconManage />
+                        <div className="flex items-center justify-center h-full mr-4">
+                            <a href="/shoppingCart">
+                                <FaShoppingCart className="ml-4 text-2xl cursor-pointer hover:text-[#3399ff] transition duration-300" />
+                            </a>
+                        <div className="flex items-center">
+                                    <li className="inline-block mx-10 text-xl"><BsSearch /></li>
+                                </div>
+                            <UserconManage />
                             </div>
-
                         </div>
                     </div>
                 </div>

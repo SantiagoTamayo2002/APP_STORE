@@ -104,13 +104,3 @@ CREATE TABLE detalle_oferta (
     FOREIGN KEY (id_oferta) REFERENCES oferta(id_oferta),
     FOREIGN KEY (id_articulo) REFERENCES articulo(codigo_articulo)
 );
-
-
-
-
-
-
-
-
-
-

@@ -1,37 +1,54 @@
-import React from 'react';
-import Navbar from './navbar';
+import React, { useEffect, useState } from 'react';
+import Navbar from './Navbar';
 import Footer from './Footer';
-import '../App.css';
+import ArticleCard from './articles';
 
 const ShoppingCart = () => {
-    const cartItems = []; // Lista vacía para el template
-    const loading = false; // No hay carga en el template
-    const error = null; // No hay error en el template
+    const [articulos, setArticulos] = useState([]);
+    const [error, setError] = useState(null);
+    const codigoPedido = 3; // Código del pedido
+
+    useEffect(() => {
+        const fetchArticulos = async () => {
+            try {
+                const response = await fetch(`http://localhost:5000/api/pedido/${codigoPedido}/articulos`);
+                const data = await response.json();
+
+                console.log(data); // Verifica qué datos recibes
+
+                if (response.ok) {
+                    setArticulos(data);
+                } else {
+                    setError(data.error || "Error desconocido al obtener los artículos.");
+                }
+            } catch (error) {
+                setError("Error al conectar con el servidor.");
+            }
+        };
+
+        fetchArticulos();
+    }, [codigoPedido]);
 
     return (
         <div>
             <Navbar />
-            <div className="shopping-cart" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '70vh' }}>
-                <h2>Carrito de Compras</h2>
-                {loading ? (
-                    <p>Cargando...</p>
-                ) : error ? (
-                    <p>{error}</p>
-                ) : cartItems.length === 0 ? (
-                    <p style={{ textAlign: 'center', fontSize: '1.5rem' }}>No ha seleccionado artículos a comprar</p>
+            <div className="p-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                {error ? (
+                    <p className="text-red-500">{error}</p>
+                ) : articulos.length > 0 ? (
+                    articulos.map((articulo, index) => (
+                        <ArticleCard
+                            key={articulo.codigo_articulo || index}  // Usar 'index' como respaldo
+                            codigoArticulo={articulo.codigo_articulo}
+                            descripcion={articulo.descripcion}
+                            marca={articulo.marca}
+                            modelo={articulo.modelo}
+                            precio={articulo.precio}
+                            imgUrl={articulo.url_img}
+                        />
+                    ))
                 ) : (
-                    <ul>
-                        {cartItems.map(item => (
-                            <li key={item.codigo_articulo}>
-                                <img src={item.url_img} alt={item.descripcion} />
-                                <div>
-                                    <h3>{item.marca} {item.modelo}</h3>
-                                    <p>{item.descripcion}</p>
-                                    <p>${item.precio}</p>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
+                    <p>No hay artículos en este pedido.</p>
                 )}
             </div>
             <Footer />

@@ -354,6 +354,101 @@ def get_offers():
         conn.close()
 
 
+@app.route('/add_to_cart', methods=['POST'])
+def add_to_cart():
+    data = request.get_json()
+    codigo_articulo = data.get('codigo_articulo')
+    dni_Usuario = '1105526436'  # data.get('dni')
+    print(dni_Usuario)
+    print(data)
+
+    if not codigo_articulo or not dni_Usuario:
+        return jsonify({"error": "El código de artículo y el DNI del usuario son requeridos"}), 400
+
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute(
+            """
+            SELECT n_pedido FROM pedido WHERE dni_usuario = %s
+            """,
+            (dni_Usuario,)
+        )
+        result = cur.fetchone()
+
+        if result:
+            codigo_pedido = result[0]
+        else:
+            codigo_pago = 1  # Asignar valores predeterminados
+            num_factura = 1
+            cur.execute(
+                """
+                INSERT INTO pedido (dni_usuario, codigo_pago, num_factura)
+                VALUES (%s, %s, %s)
+                """,
+                (dni_Usuario, codigo_pago, num_factura)
+            )
+            conn.commit()
+            codigo_pedido = cur.lastrowid
+
+        N_articulos = 1  # Cantidad predeterminada
+        cur.execute(
+            """
+            INSERT INTO detalle_pedido (N_articulos, codigo_pedido, codigo_articulo)
+            VALUES (%s, %s, %s)
+            """,
+            (N_articulos, codigo_pedido, codigo_articulo)
+        )
+        conn.commit()
+
+        return jsonify({"message": "Artículo agregado al carrito exitosamente", "pedido_id": codigo_pedido}), 201
+
+    except mariadb.Error as e:
+        print(f"Error al interactuar con la base de datos: {e}")
+        return jsonify({"error": "Ocurrió un error al agregar el artículo"}), 500
+
+    finally:
+        if conn:
+            conn.close()
+
+#//////////////////////
+
+@app.route('/api/pedido/<int:codigo_pedido>/articulos', methods=['GET'])
+def get_articulos_por_pedido(codigo_pedido):
+    try:
+        conn = get_db_connection()
+        if not conn:
+            return jsonify({"error": "Error al conectar con la base de datos"}), 500
+
+        cur = conn.cursor(dictionary=True)
+
+        # Consulta para evitar duplicados y agregar una suma de cantidades
+        query = """
+            SELECT a.codigo_articulo, a.descripcion, a.precio, a.marca, a.modelo, a.url_img
+            FROM articulo a
+            JOIN detalle_pedido dp ON a.codigo_articulo = dp.codigo_articulo
+            JOIN pedido p ON dp.codigo_pedido = p.n_pedido
+            WHERE p.n_pedido = %s;
+
+        """
+        cur.execute(query, (codigo_pedido,))
+        articulos = cur.fetchall()
+
+        cur.close()
+        conn.close()
+
+        if articulos:
+            return jsonify(articulos), 200
+        else:
+            return jsonify({"error": "No se encontraron artículos para este pedido"}), 404
+
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({"error": "Ocurrió un error en el servidor"}), 500
+
+
+
+
 
 # /////////////////////////////////////////////////////////////////
 if __name__ == "__main__":

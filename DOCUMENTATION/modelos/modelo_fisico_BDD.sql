@@ -1,139 +1,106 @@
-CREATE TABLE articulo (
-    codigo      INT(4) NOT NULL AUTO_INCREMENT,
-    tipo        VARCHAR(70),
-    marca       VARCHAR(150),
-    modelo      VARCHAR(150),
-    descripcion VARCHAR(500),
-    url_img     TEXT,
-    precio      DECIMAL(9, 2) NOT NULL,
-    inventario_inventario_id INT NOT NULL,
-    inventario_id INT(4) NOT NULL,
-    PRIMARY KEY (codigo)
-);
 
-CREATE TABLE detalle_oferta (
-    id              INT(6) NOT NULL,
-    descripcion     VARCHAR(250),
-    articulo_codigo INT(4) NOT NULL,
-    oferta_id       INT(4) NOT NULL,
-    PRIMARY KEY (id, articulo_codigo, oferta_id)
-);
-
-CREATE TABLE detalle_pedido (
-    codigo          INT(9),
-    N_articulos     INT(5),
-    pedido_codigo   VARCHAR(50) NOT NULL,
-    articulo_codigo INT(4) NOT NULL
-);
-
-CREATE TABLE direccion (
-    id INT(9)        NOT NULL,
-    calle_primaria   VARCHAR(50) NOT NULL,
-    calle_segundaria VARCHAR(50) NOT NULL,
-    ciudad           VARCHAR(50) NOT NULL,
-    provincia        VARCHAR(50) NOT NULL,
-    cod_postal       INT NOT NULL,
-    barrio           VARCHAR(150) NOT NULL,
-    N_casa           INT(5),
-    usuario_dni      INT NOT NULL,
-    PRIMARY KEY (id)
-);
-
-CREATE TABLE factura (
-    n_factura      INT(5) NOT NULL,
-    pedido_codigo  VARCHAR(50) NOT NULL,
-    PRIMARY KEY (n_factura),
-    UNIQUE INDEX factura_idx (pedido_codigo)
-);
-
-CREATE TABLE inventario (
-    cantidad INT(4) NOT NULL,
-    id INT(4) NOT NULL,
-    PRIMARY KEY (id)
-);
-
-CREATE TABLE oferta (
-    id INT(4) NOT NULL,
-    tipo VARCHAR(150) NOT NULL,
-    valor VARCHAR(50) NOT NULL,
-    fecha_inicio DATE NOT NULL,
-    fecha_fin DATE NOT NULL,
-    PRIMARY KEY (id)
-);
-
-CREATE TABLE pago (
-    id_pago INT(9) NOT NULL,
-    metodo_pago VARCHAR(50),
-    estado VARCHAR(50),
-    id_pedido VARCHAR(50),
-    pedido_codigo VARCHAR(50) NOT NULL,
-    PRIMARY KEY (id_pago),
-    UNIQUE INDEX pago_idx (pedido_codigo)
-);
-
-CREATE TABLE pedido (
-    codigo VARCHAR(50) NOT NULL,
-    numero_pedido DECIMAL(100) NOT NULL,
-    fecha_pedido DATE NOT NULL,
-    usuario_dni INT NOT NULL,
-    PRIMARY KEY (codigo)
-);
-
-CREATE TABLE tarjeta (
-    N_tarjeta BIGINT NOT NULL,
-    cvc INT(3) NOT NULL,
-    fecha_venci DATE NOT NULL,
-    tipo VARCHAR(50) NOT NULL,
-    usuario_dni INT NOT NULL,
-    PRIMARY KEY (N_tarjeta)
-);
 
 CREATE TABLE usuario (
-    dni INT NOT NULL,
-    nom_nombre VARCHAR(250) NOT NULL,
-    nom_apellido VARCHAR(250) NOT NULL,
-    rol VARCHAR(50) NOT NULL,
-    cuenta_correo VARCHAR(250) NOT NULL,
-    cuenta_contrasena VARCHAR(250) NOT NULL,
-    PRIMARY KEY (dni)
+    dni               VARCHAR(10) PRIMARY KEY,
+    nom_nombre        VARCHAR(250) NOT NULL,
+    nom_apellido      VARCHAR(250) NOT NULL,
+    rol               VARCHAR(20)  NOT NULL,
+    cuenta_correo     VARCHAR(250) NOT NULL UNIQUE,
+    cuenta_contrasena VARCHAR(20) NOT NULL
 );
 
-ALTER TABLE articulo
-    ADD CONSTRAINT articulo_inventario_fk FOREIGN KEY (inventario_id)
-    REFERENCES inventario (id);
 
-ALTER TABLE detalle_oferta
-    ADD CONSTRAINT detalle_oferta_articulo_fk FOREIGN KEY (articulo_codigo)
-    REFERENCES articulo (codigo);
+CREATE TABLE direccion (
+    id_direccion     INT(4) PRIMARY KEY,
+    dni_usuario      VARCHAR(10) NOT NULL,
+    calle_primaria   VARCHAR(60) NOT NULL,
+    calle_segundaria VARCHAR(60),
+    referencia       TEXT        NOT NULL,
+    ciudad           VARCHAR(25) NOT NULL,
+    N_casa           INT(6),
+    provincia        VARCHAR(25) NOT NULL,
+    cod_postal       INT(6)      NOT NULL,
+    pais             VARCHAR(60) NOT NULL,
+    FOREIGN KEY (dni_usuario) REFERENCES usuario(dni)
+);
 
-ALTER TABLE detalle_oferta
-    ADD CONSTRAINT detalle_oferta_oferta_fk FOREIGN KEY (oferta_id)
-    REFERENCES oferta (id);
 
-ALTER TABLE detalle_pedido
-    ADD CONSTRAINT detalle_pedido_articulo_fk FOREIGN KEY (articulo_codigo)
-    REFERENCES articulo (codigo);
+CREATE TABLE tarjeta (
+    N_tarjeta    VARCHAR(15) PRIMARY KEY,
+    dni_usuario  VARCHAR(10) NOT NULL,
+    tipo         VARCHAR(10) NOT NULL,
+    cvc          INT(3)      NOT NULL,
+    fecha_venci  DATE        NOT NULL,
+    FOREIGN KEY (dni_usuario) REFERENCES usuario(dni)
+);
 
-ALTER TABLE detalle_pedido
-    ADD CONSTRAINT detalle_pedido_pedido_fk FOREIGN KEY (pedido_codigo)
-    REFERENCES pedido (codigo);
 
-ALTER TABLE direccion
-    ADD CONSTRAINT direccion_usuario_fk FOREIGN KEY (usuario_dni)
-    REFERENCES usuario (dni);
+CREATE TABLE inventario (
+    codigo_inventario INT(9) PRIMARY KEY AUTO_INCREMENT,
+    cantidad          INT(6) NOT NULL
+);
 
-ALTER TABLE factura
-    ADD CONSTRAINT factura_pedido_fk FOREIGN KEY (pedido_codigo)
-    REFERENCES pedido (codigo);
 
-ALTER TABLE pago
-    ADD CONSTRAINT pago_pedido_fk FOREIGN KEY (pedido_codigo)
-    REFERENCES pedido (codigo);
+CREATE TABLE articulo (
+    codigo_articulo     INT(9)        PRIMARY KEY AUTO_INCREMENT,
+    codigo_inventario   INT(9),
+    precio              DECIMAL(9, 2) NOT NULL,
+    descripcion         TEXT,
+    marca               VARCHAR(60),
+    modelo              VARCHAR(60),
+    url_img             TEXT,
+    FOREIGN KEY (codigo_inventario) REFERENCES inventario(codigo_inventario)
+);
 
-ALTER TABLE pedido
-    ADD CONSTRAINT pedido_usuario_fk FOREIGN KEY (usuario_dni)
-    REFERENCES usuario (dni);
 
-ALTER TABLE tarjeta
-    ADD CONSTRAINT tarjeta_usuario_fk FOREIGN KEY (usuario_dni)
-    REFERENCES usuario (dni);
+CREATE TABLE factura (
+    n_factura  INT(9) PRIMARY KEY AUTO_INCREMENT,
+    fecha      DATE NOT NULL
+);
+
+
+CREATE TABLE pago (
+    codigo_pago  INT(9)      PRIMARY KEY AUTO_INCREMENT,
+    metodo_pago  VARCHAR(20) NOT NULL,
+    estado       VARCHAR(20) NOT NULL
+);
+
+
+CREATE TABLE pedido (
+    n_pedido      INT(9)       PRIMARY KEY AUTO_INCREMENT,
+    dni_usuario   VARCHAR(10),
+    codigo_pago   INT(9)       NOT NULL,
+    num_factura   INT(9)       NOT NULL,
+    FOREIGN KEY (dni_usuario)  REFERENCES usuario(dni),
+    FOREIGN KEY (codigo_pago)  REFERENCES pago(codigo_pago),
+    FOREIGN KEY (num_factura)  REFERENCES factura(n_factura)
+);
+
+
+CREATE TABLE detalle_pedido (
+    id_detalle      INT(9) PRIMARY KEY AUTO_INCREMENT,
+    N_articulos     INT(5) NOT NULL,
+    codigo_pedido   INT(9) NOT NULL,
+    codigo_articulo INT(9) NOT NULL,
+    FOREIGN KEY (codigo_pedido)   REFERENCES pedido(n_pedido),
+    FOREIGN KEY (codigo_articulo) REFERENCES articulo(codigo_articulo)
+);
+
+
+CREATE TABLE oferta (
+    id_oferta    INT(9)       PRIMARY KEY,
+    nombre       VARCHAR(60)  NOT NULL,
+    tipo         VARCHAR(60)  NOT NULL,
+    valor        DECIMAL(9,2) NOT NULL,
+    fecha_inicio DATE NOT NULL,
+    fecha_fin    DATE NOT NULL
+);
+
+
+CREATE TABLE detalle_oferta (
+    id   INT(9) PRIMARY KEY AUTO_INCREMENT,
+    id_oferta INT(9),
+    id_articulo INT(9),
+    FOREIGN KEY (id_oferta) REFERENCES oferta(id_oferta),
+    FOREIGN KEY (id_articulo) REFERENCES articulo(codigo_articulo)
+);

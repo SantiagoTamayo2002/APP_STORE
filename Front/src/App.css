@@ -1,0 +1,276 @@
+@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+/* App.css */
+.neumorphism-box {
+  background: #101828;
+  box-shadow: 9px 9px 18px rgba(0, 0, 0, 0.3),
+    -9px -9px 18px rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.neumorphism-circle {
+  box-shadow: 9px 9px 18px rgba(0, 0, 0, 0.3),
+    -9px -9px 18px rgba(255, 255, 255, 0.1);
+  border-radius: 100%;
+
+}
+
+.neumorphism-buttom {
+  box-shadow: 9px 9px 18px rgba(0, 0, 0, 0.3),
+    -9px -9px 18px rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+/*hover del boton to guapo*/
+
+.hover-button {
+  color: white;
+  text-decoration: none;
+  border: none;
+  background: none;
+  font-weight: 600;
+}
+.hover-button::before {
+  margin-left: auto;
+}
+.hover-button::after,
+.hover-button::before {
+  content: "";
+  width: 0%;
+  height: 2px;
+  background: #3399ff;
+  display: block;
+  transition: 0.5s;
+}
+.hover-button:hover::after,
+.hover-button:hover::before {
+  width: 100%;
+}
+
+.hover-button-custom {
+  text-decoration: none;
+  border: none;
+  background: none;
+  font-weight: 600;
+}
+.hover-button-custom::before {
+  margin-left: auto;
+}
+.hover-button-custom::after,
+.hover-button-custom::before {
+  content: "";
+  width: 0%;
+  height: 2px;
+  background: #3399ff;
+  display: block;
+  transition: 0.5s;
+}
+.hover-button-custom:hover::after,
+.hover-button-custom:hover::before {
+  width: 100%;
+}
+
+
+.navbar-gradient {
+  background: linear-gradient(90deg, #101828, #254061);
+}
+
+.home-gradient {
+  background: linear-gradient(140deg, #101828, #254061);
+}
+
+.neumorphism-tarjeta {
+  background: #101828; 
+  box-shadow: 20px 20px 40px #0a1018, -20px -20px 40px #141f30; 
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.neumorphism-tarjeta:hover {
+  box-shadow: 15px 15px 30px #0a1018, -15px -15px 30px #141f30; 
+}
+
+
+.custom-font {
+  font-family: 'Atkinson Hyperlegible', sans-serif;
+  font-weight: 400;
+}
+
+.effect-glass {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(8, 182, 230, 0.2));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  color: rgb(255, 255, 255); /* Asegúrate de que el texto sea visible */
+}
+
+.truncate-text { @apply overflow-hidden text-ellipsis whitespace-nowrap; 
+  max-width: 170px;
+}/* Ajusta este valor según necesites */
+
+/*OFERTA*/
+.offers-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #101828; /* Color de fondo para la página */
+  color: #fbfbfd;
+  padding: 20px;
+}
+
+.offers-title {
+  font-size: 2em;
+  font-weight: bold;
+  color: #3399ff; /* Título en azul */
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.offers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.offers-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.offer-card {
+  background: #1e2a38;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.3), -10px -10px 20px rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s ease;
+  min-height: 300px;
+}
+
+.offer-card:hover {
+  transform: translateY(-5px); /* Le da un efecto de hover más atractivo */
+}
+
+.offer-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.offer-name {
+  color: #3399ff;
+  font-size: 1.5em;
+}
+
+.offer-type {
+  font-size: 1.2em;
+}
+
+.offer-value {
+  margin-top: 10px;
+}
+
+.offer-date {
+  margin-top: 10px;
+}
+
+.offer-articles-title {
+  margin-top: 15px;
+  font-weight: 600;
+}
+
+.offer-articles-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.offer-article {
+  background-color: #2a3b4c;
+  padding: 5px;
+  margin-bottom: 5px;
+  border-radius: 8px;
+  color: #ffffff;
+}
+
+@media screen and (max-width: 768px) {
+  .offer-card {
+    width: 100%;
+  }
+}
+
+.article-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px; /* Opcional, para redondear bordes */
+}
+
+form label {
+  font-size: 0.7rem; /* Tamaño de texto más pequeño */
+  color: #e0e0e0; /* Color para buena visibilidad */
+}
+
+form input {
+  width: 100%;
+  padding: 5px;
+  margin-bottom: 10px;
+  border: 1px solid #3399ff;
+  border-radius: 6px;
+  background: #1e2a38;
+  color: #f0f0f0;
+}
+
+/* Añadir un poco de estilo al contenedor del formulario */
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.offer-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* Espaciado entre los botones */
+  margin-top: 20px; /* Separación del contenido */
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-between; /* Distribuir botones equitativamente */
+  gap: 15px; /* Separar botones */
+  margin-top: 20px; /* Espaciado superior */
+}
+
+.offer-edit-button {
+  background-color: #4caf50; /* Verde atractivo */
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.offer-edit-button:hover {
+  background-color: #45a049; /* Verde más oscuro al pasar el mouse */
+}
+
+.offer-delete-button {
+  background-color: #f44336; /* Rojo para el botón de eliminar */
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.offer-delete-button:hover {
+  background-color: #d32f2f; /* Rojo más oscuro al pasar el mouse */
+}

@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, session
 import mariadb
 from flask_cors import CORS
 from connect import get_db_connection
@@ -8,7 +8,11 @@ from werkzeug.security import generate_password_hash, check_password_hash
 # /////////////////////////////////////////////////////////////////////////////////////////
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, supports_credentials=True, origins=["http://localhost:5173"])
+app.secret_key = 'tu_clave_secreta_super_segura'
+app.config["SESSION_TYPE"] = "filesystem"
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_USE_SIGNER"] = True
 
 
 def get_article_names():
@@ -81,9 +85,13 @@ def login():
             stored_hash = user[
                 3
             ]  # El hash de la contraseña almacenado en la base de datos
+            dni = user[2]
 
             # Verificar si la contraseña proporcionada coincide con el hash almacenado
             if check_password_hash(stored_hash, contraseña):
+                session["dni"] = dni
+                print("DNI guardado en la sesión:", session["dni"])  
+                print('\n\n\n')
                 return (
                     jsonify(
                         {
@@ -358,12 +366,11 @@ def get_offers():
 def add_to_cart():
     data = request.get_json()
     codigo_articulo = data.get('codigo_articulo')
-    dni_Usuario = '1105526436'  # data.get('dni')
-    print(dni_Usuario)
-    print(data)
+    cantidad = data.get('cantidad')
+    dni_Usuario = session.get('dni')
 
-    if not codigo_articulo or not dni_Usuario:
-        return jsonify({"error": "El código de artículo y el DNI del usuario son requeridos"}), 400
+    if not codigo_articulo or not dni_Usuario or not cantidad:
+        return jsonify({"error": "El código de artículo, la cantidad y el DNI del usuario son requeridos"}), 400
 
     try:
         conn = get_db_connection()
@@ -391,13 +398,12 @@ def add_to_cart():
             conn.commit()
             codigo_pedido = cur.lastrowid
 
-        N_articulos = 1  # Cantidad predeterminada
         cur.execute(
             """
             INSERT INTO detalle_pedido (N_articulos, codigo_pedido, codigo_articulo)
             VALUES (%s, %s, %s)
             """,
-            (N_articulos, codigo_pedido, codigo_articulo)
+            (cantidad, codigo_pedido, codigo_articulo)
         )
         conn.commit()
 

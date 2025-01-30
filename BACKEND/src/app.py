@@ -367,44 +367,48 @@ def add_to_cart():
     data = request.get_json()
     codigo_articulo = data.get('codigo_articulo')
     cantidad = data.get('cantidad')
-    dni_Usuario = session.get('dni')
+    dni_usuario = session.get('dni')
 
-    if not codigo_articulo or not dni_Usuario or not cantidad:
+    if not codigo_articulo or not dni_usuario or not cantidad:
         return jsonify({"error": "El código de artículo, la cantidad y el DNI del usuario son requeridos"}), 400
 
     try:
         conn = get_db_connection()
         cur = conn.cursor()
-        cur.execute(
-            """
-            SELECT n_pedido FROM pedido WHERE dni_usuario = %s
-            """,
-            (dni_Usuario,)
-        )
-        result = cur.fetchone()
 
-        if result:
-            codigo_pedido = result[0]
+        cur.execute("SELECT n_factura FROM factura WHERE n_factura IN (SELECT num_factura FROM pedido WHERE dni_usuario = %s)", (dni_usuario,))
+        factura = cur.fetchone()
+
+        if factura:
+            num_factura = factura[0]
         else:
-            codigo_pago = 1  # Asignar valores predeterminados
-            num_factura = 1
-            cur.execute(
-                """
-                INSERT INTO pedido (dni_usuario, codigo_pago, num_factura)
-                VALUES (%s, %s, %s)
-                """,
-                (dni_Usuario, codigo_pago, num_factura)
-            )
+            cur.execute("INSERT INTO factura (fecha) VALUES (CURDATE())")
+            conn.commit()
+            num_factura = cur.lastrowid
+
+        cur.execute("SELECT codigo_pago FROM pago WHERE codigo_pago IN (SELECT codigo_pago FROM pedido WHERE dni_usuario = %s)", (dni_usuario,))
+        pago = cur.fetchone()
+
+        if pago:
+            codigo_pago = pago[0]
+        else:
+            cur.execute("INSERT INTO pago (metodo_pago, estado) VALUES ('Pendiente', 'En proceso')")
+            conn.commit()
+            codigo_pago = cur.lastrowid
+
+        cur.execute("SELECT n_pedido FROM pedido WHERE dni_usuario = %s", (dni_usuario,))
+        pedido = cur.fetchone()
+
+        if pedido:
+            codigo_pedido = pedido[0]
+        else:
+            cur.execute("INSERT INTO pedido (dni_usuario, codigo_pago, num_factura) VALUES (%s, %s, %s)", 
+                        (dni_usuario, codigo_pago, num_factura))
             conn.commit()
             codigo_pedido = cur.lastrowid
 
-        cur.execute(
-            """
-            INSERT INTO detalle_pedido (N_articulos, codigo_pedido, codigo_articulo)
-            VALUES (%s, %s, %s)
-            """,
-            (cantidad, codigo_pedido, codigo_articulo)
-        )
+        cur.execute("INSERT INTO detalle_pedido (N_articulos, codigo_pedido, codigo_articulo) VALUES (%s, %s, %s)",
+                    (cantidad, codigo_pedido, codigo_articulo))
         conn.commit()
 
         return jsonify({"message": "Artículo agregado al carrito exitosamente", "pedido_id": codigo_pedido}), 201
@@ -419,8 +423,8 @@ def add_to_cart():
 
 #//////////////////////
 
-@app.route('/api/pedido/<int:codigo_pedido>/articulos', methods=['GET'])
-def get_articulos_por_pedido(codigo_pedido):
+@app.route('/api/pedido/articulos', methods=['GET'])
+def get_articulos_por_pedido():
     try:
         conn = get_db_connection()
         if not conn:
@@ -428,14 +432,31 @@ def get_articulos_por_pedido(codigo_pedido):
 
         cur = conn.cursor(dictionary=True)
 
-        # Consulta para evitar duplicados y agregar una suma de cantidades
-        query = """
-            SELECT a.codigo_articulo, a.descripcion, a.precio, a.marca, a.modelo, a.url_img
-            FROM articulo a
-            JOIN detalle_pedido dp ON a.codigo_articulo = dp.codigo_articulo
-            JOIN pedido p ON dp.codigo_pedido = p.n_pedido
-            WHERE p.n_pedido = %s;
+        dni_usuario = session.get('dni')
+        if not dni_usuario:
+            return jsonify({"error": "Usuario no autenticado"}), 401
 
+        cur.execute("SELECT n_pedido FROM pedido WHERE dni_usuario = %s ORDER BY n_pedido DESC LIMIT 1", (dni_usuario,))
+        pedido = cur.fetchone()
+
+        if not pedido:
+            return jsonify({"error": "No se encontró un pedido para este usuario"}), 404
+
+        codigo_pedido = pedido['n_pedido']
+
+        query = """
+            SELECT 
+                a.codigo_articulo, 
+                a.descripcion, 
+                a.precio, 
+                a.marca, 
+                a.modelo, 
+                a.url_img, 
+                SUM(dp.N_articulos) AS cantidad
+            FROM detalle_pedido dp
+            JOIN articulo a ON a.codigo_articulo = dp.codigo_articulo
+            WHERE dp.codigo_pedido = %s
+            GROUP BY a.codigo_articulo, a.descripcion, a.precio, a.marca, a.modelo, a.url_img;
         """
         cur.execute(query, (codigo_pedido,))
         articulos = cur.fetchall()
@@ -443,14 +464,12 @@ def get_articulos_por_pedido(codigo_pedido):
         cur.close()
         conn.close()
 
-        if articulos:
-            return jsonify(articulos), 200
-        else:
-            return jsonify({"error": "No se encontraron artículos para este pedido"}), 404
+        return jsonify(articulos), 200 if articulos else 404
 
     except Exception as e:
         print(f"Error: {e}")
         return jsonify({"error": "Ocurrió un error en el servidor"}), 500
+
 
 
 

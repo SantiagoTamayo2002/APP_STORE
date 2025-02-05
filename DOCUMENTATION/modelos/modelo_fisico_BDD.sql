@@ -88,7 +88,7 @@ CREATE TABLE detalle_pedido (
 
 
 CREATE TABLE oferta (
-    id_oferta    INT(9)       PRIMARY KEY,
+    id_oferta    INT(9)       PRIMARY KEY AUTO_INCREMENT,
     nombre       VARCHAR(60)  NOT NULL,
     tipo         VARCHAR(60)  NOT NULL,
     valor        DECIMAL(9,2) NOT NULL,

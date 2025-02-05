@@ -13,33 +13,38 @@ function Offers() {
             .catch(error => console.error('Error fetching offers:', error));
     }, []);
 
+    const formatDate = (dateString) => {
+        const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+        return new Date(dateString).toLocaleDateString('es-ES', options);
+    };
+
     return (
-        <div className="overflow-hidden">
+        <div className="overflow-hidden font-sans bg-[#101828] text-white">
             <Navbar />
-            <div className="bg-[#101828] flex justify-center">
-                <div className="flex flex-wrap w-full mt-24 px-6 justify-center">
+            <div className="bg-[#101828] flex justify-center py-10 min-h-screen mt-16">
+                <div className="flex flex-wrap w-full px-6 justify-center gap-6">
                     {offers.map((offer) => (
                         <div key={offer.id_oferta} className="offer-card neumorphism-tarjeta p-6 mb-6 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5">
-                            <h2 className="offer-name text-xl font-semibold">{offer.nombre}</h2>
-                            <p className="offer-type text-sm text-gray-500">Type: {offer.tipo}</p>
+                            <h2 className="offer-name text-xl font-semibold text-[#3399ff]">{offer.nombre}</h2>
+                            <p className="offer-type text-sm text-gray-500"> {offer.tipo}</p>
                             <p className="offer-value text-lg font-bold text-[#3399ff]">Descuento: {offer.valor} %</p>
                             <p className="offer-date text-sm text-gray-500">
-                                Valid from: {offer.fecha_inicio} to {offer.fecha_fin}
+                                Válido desde: {formatDate(offer.fecha_inicio)} hasta {formatDate(offer.fecha_fin)}
                             </p>
-                            <h3 className="offer-articles-title mt-4 text-lg font-semibold">Articles in this offer:</h3>
+                            <h3 className="offer-articles-title mt-4 text-lg font-semibold text-[#3399ff]">Artículos en esta oferta:</h3>
                             <ul className="offer-articles-list mt-2">
                                 {offer.articulos?.map((article) => (
-                                    <li key={article.codigo_articulo} className="offer-article mb-4">
+                                    <li key={article.codigo_articulo} className="offer-article mb-4 bg-gray-600 p-4 rounded-lg shadow-md transition-all hover:z-50">
                                         <div className="article-details">
-                                            <p className="text-sm">Description: {article.descripcion}</p>
-                                            <p className="text-sm">Original Price: ${article.precio_original}</p>
-                                            <p className="text-sm">Discounted Price: ${article.precio_oferta}</p>
-                                            <p className="text-sm">Discount: {article.descuento_porcentaje}%</p>
+                                            <p className="text-sm text-gray-200">Descripción: {article.descripcion}</p>
+                                            <p className="text-sm text-gray-400">Precio Original: <span className="line-through text-red-400">${article.precio_original}</span></p>
+                                            <p className="text-sm text-green-400 font-semibold">Precio con Descuento: ${article.precio_oferta}</p>
+                                            <p className="text-sm text-yellow-300">Descuento: {article.descuento_porcentaje}%</p>
                                             {article.url_img && (
                                                 <img 
                                                     src={article.url_img} 
                                                     alt={article.descripcion} 
-                                                    className="article-image mt-4 w-full h-48 object-cover rounded-lg shadow-md" 
+                                                    className="article-image mt-4 w-full h-48 object-cover rounded-lg shadow-md border border-gray-500" 
                                                 />
                                             )}
                                         </div>

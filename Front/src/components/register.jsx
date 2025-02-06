@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import '../App.css';
 import Footer from './Footer';
 
-export const Register = () => {
+const Register = () => {
     const [nombre, setNombre] = useState('');
     const [apellido, setApellido] = useState('');
     const [correo, setCorreo] = useState('');
@@ -27,6 +27,7 @@ export const Register = () => {
             const result = await response.json();
             console.log(result.message);  // Procesar la respuesta
 
+            // Esta wea hace que los valores vuelvan a vacio una vez se registra la persona dx
             setNombre('');
             setApellido('');
             setCorreo('');

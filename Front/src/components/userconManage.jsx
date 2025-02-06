@@ -35,7 +35,9 @@ const UserconManage = () => {
             {mostrardiv && 
             (<div className="absolute "> 
                 <div className= {`text-[#3399ff] font-semibold text-lg p-2 relative top-20 right-32 w-[180px] ${mostrardiv ? 'animate-slideIn' : 'animate-slideOut'} effect-glass`}>
-                    <p className="my-2 p-1 hover-button-custom">Gestionar perfil</p>
+                    <p className="my-2 p-1 hover-button-custom">
+                        <Link to={`/perfil/${usuario.dni}`}>Gestionar perfil</Link>
+                    </p>                    
                     <p className="my-2 p-1 hover-button-custom">Historial de pedidos</p>
                     <p className="my-2 p-1 hover-button-custom">
                         <Link to="/articles">Panel de administración</Link>

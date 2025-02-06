@@ -411,7 +411,12 @@ def add_to_cart():
         if conn:
             conn.close()
 
+
 #//////////////////////
+ 
+
+
+
 
 @app.route('/api/pedido/<int:codigo_pedido>/articulos', methods=['GET'])
 def get_articulos_por_pedido(codigo_pedido):

@@ -3,6 +3,7 @@
     import { FaCartPlus } from "react-icons/fa";
 
     const ArticleCard = ({ codigoArticulo, descripcion, marca, modelo, precio, imgUrl, dni_Usuario }) => {
+        
         const handleAddToCart = () => {
             const payload = {
                 codigo_articulo: codigoArticulo,

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap");
 
 /* App.css */
 .neumorphism-box {
@@ -13,7 +13,6 @@
   box-shadow: 9px 9px 18px rgba(0, 0, 0, 0.3),
     -9px -9px 18px rgba(255, 255, 255, 0.1);
   border-radius: 100%;
-
 }
 
 .neumorphism-buttom {
@@ -72,7 +71,6 @@
   width: 100%;
 }
 
-
 .navbar-gradient {
   background: linear-gradient(90deg, #101828, #254061);
 }
@@ -82,33 +80,34 @@
 }
 
 .neumorphism-tarjeta {
-  background: #101828; 
-  box-shadow: 20px 20px 40px #0a1018, -20px -20px 40px #141f30; 
+  background: #101828;
+  box-shadow: 20px 20px 40px #0a1018, -20px -20px 40px #141f30;
   border-radius: 12px;
   transition: all 0.3s ease;
 }
 
 .neumorphism-tarjeta:hover {
-  box-shadow: 15px 15px 30px #0a1018, -15px -15px 30px #141f30; 
+  box-shadow: 15px 15px 30px #0a1018, -15px -15px 30px #141f30;
 }
 
-
 .custom-font {
-  font-family: 'Atkinson Hyperlegible', sans-serif;
+  font-family: "Atkinson Hyperlegible", sans-serif;
   font-weight: 400;
 }
 
 .effect-glass {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(8, 182, 230, 0.2));
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.3),
+    rgba(8, 182, 230, 0.2)
+  );
   border-radius: 5px;
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
   color: rgb(255, 255, 255); /* Asegúrate de que el texto sea visible */
 }
 
-.truncate-text { @apply overflow-hidden text-ellipsis whitespace-nowrap; 
+.truncate-text {
+  @apply overflow-hidden text-ellipsis whitespace-nowrap;
   max-width: 170px;
-}/* Ajusta este valor según necesites */
-
+} /* Ajusta este valor según necesites */

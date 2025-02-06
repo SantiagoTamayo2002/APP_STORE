@@ -2,18 +2,8 @@ import React, { useState } from "react";
 import { IoIosArrowDropright } from "react-icons/io";
 import { FaCartPlus } from "react-icons/fa";
 
-<<<<<<< HEAD
-    const ArticleCard = ({ codigoArticulo, descripcion, marca, modelo, precio, imgUrl, dni_Usuario }) => {
-        
-        const handleAddToCart = () => {
-            const payload = {
-                codigo_articulo: codigoArticulo,
-                dni_usuario: dni_Usuario 
-            };
-=======
 const ArticleCard = ({ codigoArticulo, descripcion, marca, modelo, precio, imgUrl, dni_Usuario }) => {
     const [cantidad, setCantidad] = useState(1);
->>>>>>> origin/Andres
 
     const handleAddToCart = () => {
         const payload = {

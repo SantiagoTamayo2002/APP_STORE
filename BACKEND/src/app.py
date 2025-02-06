@@ -365,6 +365,7 @@ def get_offers():
 @app.route('/add_to_cart', methods=['POST'])
 def add_to_cart():
     data = request.get_json()
+    print(data)
     codigo_articulo = data.get('codigo_articulo')
     cantidad = data.get('cantidad')
     dni_usuario = session.get('dni')

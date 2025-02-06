@@ -3,10 +3,11 @@ import React,  { useState } from "react";
 import { FaCircleUser } from "react-icons/fa6";
 import { useAuth } from './AuthContext';
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 const UserconManage = () => {
-
+    const navigate = useNavigate();
     const [mostrardiv, setDiv] = useState(false);
     const { logout } = useAuth();
     const [usuario, setUsuario] = useState(() => {
@@ -19,7 +20,7 @@ const UserconManage = () => {
         setUsuario(null);
         localStorage.removeItem('usuario');
         logout(); // Limpiar el estado global de autenticación
-        navigate('/'); // Redirigir al inicio
+        navigate('/login'); // Redirigir al inicio
         };
 
 

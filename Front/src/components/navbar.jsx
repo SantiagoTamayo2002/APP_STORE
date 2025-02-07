@@ -23,7 +23,7 @@ const Navbar = () => {
                                     <Link to="/welcome">Inicio</Link>
                                 </li>
                                 <li className="inline-block mx-10 hover-button neumorphism-box">
-                                    Categorías
+                                    <Link to="/shoppingCart"> Pedidos </Link>
                                 </li>
                                 <li className="inline-block mx-10 hover-button neumorphism-box">
                                     <Link to ="/offers">Ofertas</Link>
@@ -39,9 +39,6 @@ const Navbar = () => {
                         <div className="h-full flex-1"></div>
                         <div className="h-full flex-1">
                             <div className="flex items-center justify-center h-full mr-4">
-                                    <a href="/shoppingCart">
-                                        <FaShoppingCart className="mx-4 text-3xl cursor-pointer text-[#c4c6c9] hover:text-[#3399ff] transition duration-300" />
-                                    </a>
                                 <UserconManage />
                             </div>
                         </div>

@@ -87,14 +87,14 @@ function Offers() {
                                 {offer.articulos?.map((article) => (
                                     <li key={article.codigo_articulo} className="offer-article mb-4 bg-gray-600 p-4 rounded-lg shadow-md transition-all hover:z-50">
                                         <div className="article-details">
-                                            <p className="text-sm text-gray-200">{article.descripcion}</p>
+                                            <p className="text-sm text-gray-200">{article.marca} {article.modelo}</p>
                                             <p className="text-sm text-gray-400">Precio Original: <span className="line-through text-red-400">${article.precio_original}</span></p>
                                             <p className="text-sm text-green-400 font-semibold">Precio con Descuento: ${article.precio_oferta}</p>
                                             <p className="text-sm text-yellow-300">Descuento: {article.descuento_porcentaje}%</p>
                                             {article.url_img && (
                                                 <img 
                                                     src={article.url_img} 
-                                                    alt={article.descripcion} 
+                                                    alt={article.modelo} 
                                                     className="article-image mt-4 w-full h-48 object-cover rounded-lg shadow-md border border-gray-500" 
                                                 />
                                             )}
@@ -123,7 +123,7 @@ function Offers() {
                             <div className='flex justify-end'>
                                 <button
                                     className='text-2xl text-[#3399ff]'
-                                    onClick={() => setIsDetailVisible(false)}
+                                    onClick={handleDetailToggle}
                                 >
                                     &times;
                                 </button>

@@ -391,7 +391,7 @@ def get_offers():
         cur.execute(
             """
             SELECT o.id_oferta, o.nombre, o.tipo, o.valor, o.fecha_inicio, o.fecha_fin, 
-                   a.codigo_articulo, a.descripcion, a.url_img, a.precio
+                   a.codigo_articulo, a.marca, a.modelo, a.descripcion, a.url_img, a.precio
             FROM oferta o
             JOIN detalle_oferta dof ON o.id_oferta = dof.id_oferta
             JOIN articulo a ON dof.id_articulo = a.codigo_articulo
@@ -416,7 +416,7 @@ def get_offers():
                     "articulos": [],
                 }
 
-            original_price = offer[9]
+            original_price = offer[11]
             discount_percentage = round(
                 offer[3], 2
             )  # Valor ya representa el porcentaje
@@ -427,8 +427,10 @@ def get_offers():
             current_offer["articulos"].append(
                 {
                     "codigo_articulo": offer[6],
-                    "descripcion": offer[7],
-                    "url_img": offer[8],
+                    "marca": offer[7],
+                    "modelo": offer[8],
+                    "descripcion": offer[9],
+                    "url_img": offer[10],
                     "precio_original": original_price,
                     "precio_oferta": round(discount_price, 2),
                     "descuento_porcentaje": discount_percentage,

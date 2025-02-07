@@ -454,7 +454,7 @@ def add_to_cart():
     codigo_articulo = data.get('codigo_articulo')
     cantidad = data.get('cantidad')
     dni_usuario = session.get('dni')
-    print(dni_usuario)
+    print("usuario con dni:" , dni_usuario)
 
     if not codigo_articulo or not dni_usuario or not cantidad:
         return jsonify({"error": "El código de artículo, la cantidad y el DNI del usuario son requeridos"}), 400

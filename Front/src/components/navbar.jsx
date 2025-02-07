@@ -8,7 +8,7 @@ import UserconManage from "./userconManage";
 const Navbar = () => {
     return (
         <div>
-            <div className='bg-[#101828] text-white h-[100px] w-full justify-center flex navbar-gradient border-b-2 border-[#101828] drop-shadow-[0_0_6px_rgba(51,153,255,1)] fixed'>
+            <div className='bg-[#101828] text-white h-[100px] w-full justify-center flex navbar-gradient border-b-2 border-[#101828] drop-shadow-[0_0_6px_rgba(51,153,255,1)] fixed z-50 '>
                 <div className="flex-1 ">
 
                 </div>
@@ -38,14 +38,11 @@ const Navbar = () => {
                         <div className="h-full flex-1"></div>
                         <div className="h-full flex-1"></div>
                         <div className="h-full flex-1">
-                        <div className="flex items-center justify-center h-full mr-4">
-                            <a href="/shoppingCart">
-                                <FaShoppingCart className="ml-4 text-2xl cursor-pointer hover:text-[#3399ff] transition duration-300" />
-                            </a>
-                        <div className="flex items-center">
-                                    <li className="inline-block mx-10 text-xl"><BsSearch /></li>
-                                </div>
-                            <UserconManage />
+                            <div className="flex items-center justify-center h-full mr-4">
+                                    <a href="/shoppingCart">
+                                        <FaShoppingCart className="mx-4 text-3xl cursor-pointer text-[#c4c6c9] hover:text-[#3399ff] transition duration-300" />
+                                    </a>
+                                <UserconManage />
                             </div>
                         </div>
                     </div>

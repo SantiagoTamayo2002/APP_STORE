@@ -3,6 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from './navbar';
 import Footer from './Footer';
 import ArticleCard from './article_card';
+import Slider from 'react-slick';
+import { FaPencilAlt } from 'react-icons/fa';
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css";
 
 const ShoppingCart = () => {
     const [articulos, setArticulos] = useState([]);
@@ -51,28 +55,53 @@ const ShoppingCart = () => {
         }
     };
 
+    const handleDeleteItem = (codigoArticulo) => {
+        setArticulos(articulos.filter(articulo => articulo.codigo_articulo !== codigoArticulo));
+    };
+
+    const settings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 2000,
+    };
+
     return (
-        <div>
-            <Navbar />
-            <div className="p-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                {error ? (
-                    <p className="text-red-500">{error}</p>
-                ) : articulos.length > 0 ? (
-                    articulos.map((articulo) => (
-                        <ArticleCard
-                            key={articulo.codigo_articulo}
-                            codigoArticulo={articulo.codigo_articulo}
-                            descripcion={articulo.descripcion}
-                            marca={articulo.marca}
-                            modelo={articulo.modelo}
-                            precio={articulo.precio}
-                            cantidad={articulo.cantidad}  
-                            imgUrl={articulo.url_img}
-                        />
-                    ))
-                ) : (
-                    <p>No hay artículos en este pedido.</p>
-                )}
+        <div className="bg-[#101828] text-white min-h-screen flex flex-col justify-between">
+            <Navbar/>
+            <div className='flex justify-center mt-24'>
+                <div className="w-3/4">
+                    {error ? (
+                        <p className="text-red-500">{error}</p>
+                    ) : articulos.length > 0 ? (
+                        <Slider {...settings}>
+                            {articulos.map((articulo) => (
+                                <div key={articulo.codigo_articulo} className="relative">
+                                    <button 
+                                        className="absolute top-0 left-0 bg-gray-800 p-1 rounded-full text-white"
+                                        onClick={() => handleDeleteItem(articulo.codigo_articulo)}
+                                    >
+                                        <FaPencilAlt />
+                                    </button>
+                                    <ArticleCard
+                                        codigoArticulo={articulo.codigo_articulo}
+                                        descripcion={articulo.descripcion}
+                                        marca={articulo.marca}
+                                        modelo={articulo.modelo}
+                                        precio={articulo.precio}
+                                        cantidad={articulo.cantidad}  
+                                        imgUrl={articulo.url_img}
+                                    />
+                                </div>
+                            ))}
+                        </Slider>
+                    ) : (
+                        <p>No hay artículos en este pedido</p>
+                    )}
+                </div>
             </div>
             <div className="flex justify-center my-5">
                 <button 
@@ -82,7 +111,6 @@ const ShoppingCart = () => {
                     Generar Factura
                 </button>
             </div>
-            <Footer />
         </div>
     );
 };

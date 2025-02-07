@@ -445,51 +445,33 @@ def get_offers():
         conn.close()
 
 
-@app.route("/add_to_cart", methods=["POST"])
+# /////////////////////////////////////////////////////////////////
+#                         ADD_TO_CART
+
+@app.route('/add_to_cart', methods=['POST'])
 def add_to_cart():
     data = request.get_json()
-    codigo_articulo = data.get("codigo_articulo")
-    dni_Usuario = "1105526436"  # data.get('dni')
-    print(dni_Usuario)
-    print(data)
+    codigo_articulo = data.get('codigo_articulo')
+    cantidad = data.get('cantidad')
+    dni_usuario = session.get('dni')
+    print(dni_usuario)
 
-    if not codigo_articulo or not dni_Usuario:
-        return (
-            jsonify(
-                {"error": "El código de artículo y el DNI del usuario son requeridos"}
-            ),
-            400,
-        )
+    if not codigo_articulo or not dni_usuario or not cantidad:
+        return jsonify({"error": "El código de artículo, la cantidad y el DNI del usuario son requeridos"}), 400
 
     try:
         conn = get_db_connection()
         cur = conn.cursor()
-        cur.execute(
-            """
-            SELECT n_pedido FROM pedido WHERE dni_usuario = %s
-            """,
-            (dni_Usuario,),
-        )
-        result = cur.fetchone()
 
         cur.execute("SELECT n_factura FROM factura WHERE n_factura IN (SELECT num_factura FROM pedido WHERE dni_usuario = %s)", (dni_usuario,))
         factura = cur.fetchone()
-
         if factura:
             num_factura = factura[0]
         else:
-            codigo_pago = 1  # Asignar valores predeterminados
-            num_factura = 1
-            cur.execute(
-                """
-                INSERT INTO pedido (dni_usuario, codigo_pago, num_factura)
-                VALUES (%s, %s, %s)
-                """,
-                (dni_Usuario, codigo_pago, num_factura),
-            )
+            cur.execute("INSERT INTO factura (fecha) VALUES (CURDATE())")
             conn.commit()
             num_factura = cur.lastrowid
-
+            print(num_factura)
         cur.execute("SELECT codigo_pago FROM pago WHERE codigo_pago IN (SELECT codigo_pago FROM pedido WHERE dni_usuario = %s)", (dni_usuario,))
         pago = cur.fetchone()
 
@@ -497,6 +479,7 @@ def add_to_cart():
             codigo_pago = pago[0]
         else:
             cur.execute("INSERT INTO pago (metodo_pago, estado) VALUES ('Pendiente', 'En proceso')")
+            print("pardo4")
             conn.commit()
             codigo_pago = cur.lastrowid
 
@@ -511,25 +494,11 @@ def add_to_cart():
             conn.commit()
             codigo_pedido = cur.lastrowid
 
-        N_articulos = 1  # Cantidad predeterminada
-        cur.execute(
-            """
-            INSERT INTO detalle_pedido (N_articulos, codigo_pedido, codigo_articulo)
-            VALUES (%s, %s, %s)
-            """,
-            (N_articulos, codigo_pedido, codigo_articulo),
-        )
+        cur.execute("INSERT INTO detalle_pedido (N_articulos, codigo_pedido, codigo_articulo) VALUES (%s, %s, %s)",
+                    (cantidad, codigo_pedido, codigo_articulo))
         conn.commit()
 
-        return (
-            jsonify(
-                {
-                    "message": "Artículo agregado al carrito exitosamente",
-                    "pedido_id": codigo_pedido,
-                }
-            ),
-            201,
-        )
+        return jsonify({"message": "Artículo agregado al carrito exitosamente", "pedido_id": codigo_pedido}), 201
 
     except mariadb.Error as e:
         print(f"Error al interactuar con la base de datos: {e}")
@@ -540,11 +509,11 @@ def add_to_cart():
             conn.close()
 
 
-# //////////////////////
-
-
-@app.route("/api/pedido/<int:codigo_pedido>/articulos", methods=["GET"])
-def get_articulos_por_pedido(codigo_pedido):
+# /////////////////////////////////////////////////////////////////////////////////////////
+# /////////////////////////////////////////////////////////////////////////////////////////
+#                   GET_CART
+@app.route('/api/pedido/articulos', methods=['GET'])
+def get_articulos_por_pedido():
     try:
         conn = get_db_connection()
         if not conn:
@@ -584,20 +553,18 @@ def get_articulos_por_pedido(codigo_pedido):
         cur.close()
         conn.close()
 
-        if articulos:
-            return jsonify(articulos), 200
-        else:
-            return (
-                jsonify({"error": "No se encontraron artículos para este pedido"}),
-                404,
-            )
+        return jsonify(articulos), 200 if articulos else 404
 
     except Exception as e:
         print(f"Error: {e}")
         return jsonify({"error": "Ocurrió un error en el servidor"}), 500
 
-
 # /////////////////////////////////////////////////////////////////
+
+
+
+
+
 if __name__ == "__main__":
     connection = get_db_connection()
     if connection:

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Navbar from './Navbar';
+import Navbar from './navbar';
 import Footer from './Footer';
 import ArticleCard from './article_card'; // Asegúrate de que el import sea correcto
 

@@ -36,6 +36,7 @@ export const Login = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                credentials: "include", 
                 body: JSON.stringify(data),
             });
 
@@ -69,9 +70,9 @@ export const Login = () => {
         localStorage.removeItem('usuario');
         setMensaje('Sesión cerrada');
         login(); // Esto también debe poder borrar el estado global de autenticación, aunque aún no se si lo utilizaré xd
-        navigate('/'); 
+        navigate('/');
     };
-    
+
 
     return (
         <div>
@@ -116,6 +117,15 @@ export const Login = () => {
                                     >
                                         Continuar
                                     </button>
+                                    <p className="text-white mt-4 text-center">
+                                        ¿No tienes una cuenta?  
+                                        <span
+                                            className="text-blue-400 hover:underline ml-1 cursor-pointer"
+                                            onClick={() => navigate("/register")}
+                                        >
+                                            Regístrate
+                                        </span>
+                                    </p>
                                 </form>
                             </div>
                         </div>

@@ -1,4 +1,5 @@
 
+CREATE DATABASE tienda_online;
 
 CREATE TABLE usuario (
     dni               VARCHAR(10) PRIMARY KEY,
@@ -9,9 +10,8 @@ CREATE TABLE usuario (
     cuenta_contrasena VARCHAR(20) NOT NULL
 );
 
-
 CREATE TABLE direccion (
-    id_direccion     INT(4) PRIMARY KEY,
+    id_direccion     INT(4) PRIMARY KEY AUTO_INCREMENT,
     dni_usuario      VARCHAR(10) NOT NULL,
     calle_primaria   VARCHAR(60) NOT NULL,
     calle_segundaria VARCHAR(60),
@@ -24,7 +24,6 @@ CREATE TABLE direccion (
     FOREIGN KEY (dni_usuario) REFERENCES usuario(dni)
 );
 
-
 CREATE TABLE tarjeta (
     N_tarjeta    VARCHAR(15) PRIMARY KEY,
     dni_usuario  VARCHAR(10) NOT NULL,
@@ -33,7 +32,6 @@ CREATE TABLE tarjeta (
     fecha_venci  DATE        NOT NULL,
     FOREIGN KEY (dni_usuario) REFERENCES usuario(dni)
 );
-
 
 CREATE TABLE inventario (
     codigo_inventario INT(9) PRIMARY KEY AUTO_INCREMENT,

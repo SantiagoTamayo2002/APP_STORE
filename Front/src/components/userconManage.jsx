@@ -3,10 +3,11 @@ import React,  { useState } from "react";
 import { FaCircleUser } from "react-icons/fa6";
 import { useAuth } from './AuthContext';
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 const UserconManage = () => {
-
+    const navigate = useNavigate();
     const [mostrardiv, setDiv] = useState(false);
     const { logout } = useAuth();
     const [usuario, setUsuario] = useState(() => {
@@ -19,7 +20,7 @@ const UserconManage = () => {
         setUsuario(null);
         localStorage.removeItem('usuario');
         logout(); // Limpiar el estado global de autenticación
-        navigate('/'); // Redirigir al inicio
+        navigate('/login'); // Redirigir al inicio
         };
 
 
@@ -35,7 +36,9 @@ const UserconManage = () => {
             {mostrardiv && 
             (<div className="absolute "> 
                 <div className= {`text-[#3399ff] font-semibold text-lg p-2 relative top-20 right-32 w-[180px] ${mostrardiv ? 'animate-slideIn' : 'animate-slideOut'} effect-glass`}>
-                    <p className="my-2 p-1 hover-button-custom">Gestionar perfil</p>
+                    <p className="my-2 p-1 hover-button-custom">
+                        <Link to={`/perfil/${usuario.dni}`}>Gestionar perfil</Link>
+                    </p>                    
                     <p className="my-2 p-1 hover-button-custom">Historial de pedidos</p>
                     <p className="my-2 p-1 hover-button-custom">
                         <Link to="/articles">Panel de administración</Link>

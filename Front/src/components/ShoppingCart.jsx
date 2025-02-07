@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import Navbar from './Navbar';
+import Navbar from './navbar';
 import Footer from './Footer';
-import ArticleCard from './articles';
+import ArticleCard from './article_card'; // Asegúrate de que el import sea correcto
 
 const ShoppingCart = () => {
     const [articulos, setArticulos] = useState([]);
     const [error, setError] = useState(null);
-    const codigoPedido = 3; // Código del pedido
 
     useEffect(() => {
         const fetchArticulos = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/pedido/${codigoPedido}/articulos`);
+                const response = await fetch("http://localhost:5000/api/pedido/articulos", {
+                    credentials: 'include'  // Permite enviar cookies de sesión
+                });
+
                 const data = await response.json();
 
-                console.log(data); // Verifica qué datos recibes
+                console.log("Datos recibidos:", data);
 
                 if (response.ok) {
                     setArticulos(data);
@@ -27,7 +29,7 @@ const ShoppingCart = () => {
         };
 
         fetchArticulos();
-    }, [codigoPedido]);
+    }, []);
 
     return (
         <div>
@@ -36,14 +38,15 @@ const ShoppingCart = () => {
                 {error ? (
                     <p className="text-red-500">{error}</p>
                 ) : articulos.length > 0 ? (
-                    articulos.map((articulo, index) => (
+                    articulos.map((articulo) => (
                         <ArticleCard
-                            key={articulo.codigo_articulo || index}  // Usar 'index' como respaldo
+                            key={articulo.codigo_articulo}
                             codigoArticulo={articulo.codigo_articulo}
                             descripcion={articulo.descripcion}
                             marca={articulo.marca}
                             modelo={articulo.modelo}
                             precio={articulo.precio}
+                            cantidad={articulo.cantidad}  
                             imgUrl={articulo.url_img}
                         />
                     ))

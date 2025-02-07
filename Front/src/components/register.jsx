@@ -125,7 +125,11 @@ const Register = () => {
                                                 name="nombre"
                                                 id="nombre"
                                                 value={nombre}
-                                                onChange={(e) => setNombre(e.target.value)}
+                                                onChange={(e) => {
+                                                    if (e.target.value.length <= 250) {
+                                                        setNombre(e.target.value);
+                                                    }
+                                                }}
                                                 placeholder="Ingresa tu nombre"
                                                 className="w-full p-3 mb-4 rounded-lg bg-[#1A202C] text-white border border-[#2D3748] focus:outline-none focus:ring-2 focus:ring-blue-500"
                                                 required
@@ -139,7 +143,11 @@ const Register = () => {
                                                 name="apellido"
                                                 id="apellido"
                                                 value={apellido}
-                                                onChange={(e) => setApellido(e.target.value)}
+                                                onChange={(e) => {
+                                                    if (e.target.value.length <= 250) {
+                                                        setApellido(e.target.value);
+                                                    }
+                                                }}
                                                 placeholder="Ingresa tu apellido"
                                                 className="w-full p-3 mb-4 rounded-lg bg-[#1A202C] text-white border border-[#2D3748] focus:outline-none focus:ring-2 focus:ring-blue-500"
                                                 required
@@ -153,7 +161,11 @@ const Register = () => {
                                                 name="dni"
                                                 id="dni"
                                                 value={dni}
-                                                onChange={(e) => setDNI(e.target.value)}
+                                                onChange={(e) => {
+                                                    if (/^\d{0,10}$/.test(e.target.value)) {
+                                                        setDNI(e.target.value);
+                                                    }
+                                                }}
                                                 placeholder="Ingresa tu dni"
                                                 className="w-full p-3 mb-4 rounded-lg bg-[#1A202C] text-white border border-[#2D3748] focus:outline-none focus:ring-2 focus:ring-blue-500"
                                                 required
@@ -167,7 +179,11 @@ const Register = () => {
                                                 name="correo"
                                                 id="correo"
                                                 value={correo}
-                                                onChange={(e) => setCorreo(e.target.value)}
+                                                onChange={(e) => {
+                                                    if (e.target.value.length <= 250) {
+                                                        setCorreo(e.target.value);
+                                                    }
+                                                }}
                                                 placeholder="Ingresa tu correo electrónico"
                                                 className="w-full p-3 mb-4 rounded-lg bg-[#1A202C] text-white border border-[#2D3748] focus:outline-none focus:ring-2 focus:ring-blue-500"
                                                 required
@@ -181,7 +197,11 @@ const Register = () => {
                                                 name="contraseña"
                                                 id="contraseña"
                                                 value={contraseña}
-                                                onChange={(e) => setContraseña(e.target.value)}
+                                                onChange={(e) => {
+                                                    if (e.target.value.length <= 20) {
+                                                        setContraseña(e.target.value);
+                                                    }
+                                                }}
                                                 placeholder="Ingresa tu contraseña"
                                                 className="w-full p-3 mb-4 rounded-lg bg-[#1A202C] text-white border border-[#2D3748] focus:outline-none focus:ring-2 focus:ring-blue-500"
                                                 required
@@ -195,8 +215,11 @@ const Register = () => {
                                                 name="contraseña2"
                                                 id="contraseña2"
                                                 value={contraseña2}
-                                                onChange={(e) => setContraseña2(e.target.value)}
-                                                placeholder="Repite tu contraseña"
+                                                onChange={(e) => {
+                                                    if (e.target.value.length <= 20) {
+                                                        setContraseña2(e.target.value);
+                                                    }
+                                                }}                                                placeholder="Repite tu contraseña"
                                                 className="w-full p-3 mb-6 rounded-lg bg-[#1A202C] text-white border border-[#2D3748] focus:outline-none focus:ring-2 focus:ring-blue-500"
                                                 required
                                             />
@@ -213,7 +236,11 @@ const Register = () => {
                                                 name="callePrimaria"
                                                 id="callePrimaria"
                                                 value={callePrimaria}
-                                                onChange={(e) => setCallePrimaria(e.target.value)}
+                                                onChange={(e) => {
+                                                    if (e.target.value.length <= 60) {
+                                                        setCallePrimaria(e.target.value);
+                                                    }
+                                                }}
                                                 placeholder="Ingresa la calle principal"
                                                 className="w-full p-3 mb-4 rounded-lg bg-[#1A202C] text-white border border-[#2D3748] focus:outline-none focus:ring-2 focus:ring-blue-500"
                                                 required
@@ -227,7 +254,11 @@ const Register = () => {
                                                 name="calleSegundaria"
                                                 id="calleSegundaria"
                                                 value={calleSegundaria}
-                                                onChange={(e) => setCalleSegundaria(e.target.value)}
+                                                onChange={(e) => {
+                                                    if (e.target.value.length <= 60) {
+                                                        setCalleSegundaria(e.target.value);
+                                                    }
+                                                }}
                                                 placeholder="Ingresa la calle secundaria"
                                                 className="w-full p-3 mb-4 rounded-lg bg-[#1A202C] text-white border border-[#2D3748] focus:outline-none focus:ring-2 focus:ring-blue-500"
                                             />
@@ -236,15 +267,15 @@ const Register = () => {
                                         <div>
                                             <h2 className='text-white text-2xl font-semibold mb-4'>Referencia</h2>
                                             <input
-                                                type="text"
-                                                name="referencia"
-                                                id="referencia"
-                                                value={referencia}
-                                                onChange={(e) => setReferencia(e.target.value)}
-                                                placeholder="Ingresa una referencia"
-                                                className="w-full p-3 mb-4 rounded-lg bg-[#1A202C] text-white border border-[#2D3748] focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                                required
-                                            />
+                                            type="text"
+                                            name="referencia"
+                                            id="referencia"
+                                            value={referencia}
+                                            onChange={(e) => setReferencia(e.target.value)}
+                                            placeholder="Ingresa una referencia"
+                                            className="w-full p-3 mb-4 rounded-lg bg-[#1A202C] text-white border border-[#2D3748] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                            required
+                                        />
                                         </div>
 
                                         <div>
@@ -254,7 +285,11 @@ const Register = () => {
                                                 name="ciudad"
                                                 id="ciudad"
                                                 value={ciudad}
-                                                onChange={(e) => setCiudad(e.target.value)}
+                                                onChange={(e) => {
+                                                    if (e.target.value.length <= 25) {
+                                                        setCiudad(e.target.value);
+                                                    }
+                                                }}
                                                 placeholder="Ingresa tu ciudad"
                                                 className="w-full p-3 mb-4 rounded-lg bg-[#1A202C] text-white border border-[#2D3748] focus:outline-none focus:ring-2 focus:ring-blue-500"
                                                 required
@@ -268,7 +303,11 @@ const Register = () => {
                                                 name="nCasa"
                                                 id="nCasa"
                                                 value={nCasa}
-                                                onChange={(e) => setNCasa(e.target.value)}
+                                                onChange={(e) => {
+                                                    if (e.target.value.length <= 6) {
+                                                        setNCasa(e.target.value);
+                                                    }
+                                                }}
                                                 placeholder="Ingresa el número de casa"
                                                 className="w-full p-3 mb-4 rounded-lg bg-[#1A202C] text-white border border-[#2D3748] focus:outline-none focus:ring-2 focus:ring-blue-500"
                                                 required
@@ -282,7 +321,11 @@ const Register = () => {
                                                 name="provincia"
                                                 id="provincia"
                                                 value={provincia}
-                                                onChange={(e) => setProvincia(e.target.value)}
+                                                onChange={(e) => {
+                                                    if (e.target.value.length <= 25) {
+                                                        setProvincia(e.target.value);
+                                                    }
+                                                }}
                                                 placeholder="Ingresa tu provincia"
                                                 className="w-full p-3 mb-4 rounded-lg bg-[#1A202C] text-white border border-[#2D3748] focus:outline-none focus:ring-2 focus:ring-blue-500"
                                                 required
@@ -296,7 +339,11 @@ const Register = () => {
                                                 name="codPostal"
                                                 id="codPostal"
                                                 value={codPostal}
-                                                onChange={(e) => setCodPostal(e.target.value)}
+                                                onChange={(e) => {
+                                                    if (e.target.value.length <= 6) {
+                                                        setCodPostal(e.target.value);
+                                                    }
+                                                }}
                                                 placeholder="Ingresa el código postal"
                                                 className="w-full p-3 mb-4 rounded-lg bg-[#1A202C] text-white border border-[#2D3748] focus:outline-none focus:ring-2 focus:ring-blue-500"
                                                 required
@@ -310,7 +357,11 @@ const Register = () => {
                                                 name="pais"
                                                 id="pais"
                                                 value={pais}
-                                                onChange={(e) => setPais(e.target.value)}
+                                                onChange={(e) => {
+                                                    if (e.target.value.length <= 60) {
+                                                        setPais(e.target.value);
+                                                    }
+                                                }}
                                                 placeholder="Ingresa tu país"
                                                 className="w-full p-3 mb-6 rounded-lg bg-[#1A202C] text-white border border-[#2D3748] focus:outline-none focus:ring-2 focus:ring-blue-500"
                                                 required
@@ -328,7 +379,11 @@ const Register = () => {
                                                 name="nTarjeta"
                                                 id="nTarjeta"
                                                 value={nTarjeta}
-                                                onChange={(e) => setNTarjeta(e.target.value)}
+                                                onChange={(e) => {
+                                                    if (/^\d{0,15}$/.test(e.target.value)) {
+                                                        setNTarjeta(e.target.value);
+                                                    }
+                                                }}
                                                 placeholder="Ingresa el número de tarjeta"
                                                 className="w-full p-3 mb-4 rounded-lg bg-[#1A202C] text-white border border-[#2D3748] focus:outline-none focus:ring-2 focus:ring-blue-500"
                                                 required
@@ -348,7 +403,6 @@ const Register = () => {
                                                 <option value="">Selecciona un tipo</option>
                                                 <option value="Visa">Visa</option>
                                                 <option value="MasterCard">MasterCard</option>
-                                                <option value="American Express">American Express</option>
                                             </select>
                                         </div>
 
@@ -359,7 +413,11 @@ const Register = () => {
                                                 name="cvc"
                                                 id="cvc"
                                                 value={cvc}
-                                                onChange={(e) => setCvc(e.target.value)}
+                                                onChange={(e) => {
+                                                    if (/^\d{0,3}$/.test(e.target.value)) {
+                                                        setCvc(e.target.value);
+                                                    }
+                                                }}
                                                 placeholder="Ingresa el CVC"
                                                 className="w-full p-3 mb-4 rounded-lg bg-[#1A202C] text-white border border-[#2D3748] focus:outline-none focus:ring-2 focus:ring-blue-500"
                                                 required

@@ -11,7 +11,7 @@ CREATE TABLE usuario (
 );
 
 CREATE TABLE direccion (
-    id_direccion     INT(4) PRIMARY KEY,
+    id_direccion     INT(4) PRIMARY KEY AUTO_INCREMENT,
     dni_usuario      VARCHAR(10) NOT NULL,
     calle_primaria   VARCHAR(60) NOT NULL,
     calle_segundaria VARCHAR(60),

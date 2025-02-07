@@ -89,24 +89,24 @@ def login():
 
             # Verificar si la contraseña proporcionada coincide con el hash almacenado
             if check_password_hash(stored_hash, contraseña):
-                session["dni"] = dni
-                print("DNI guardado en la sesión:", session["dni"])  
-                print('\n\n\n')
+                # Devolver los datos reales del usuario
                 return (
                     jsonify(
                         {
                             "success": True,
                             "message": "Inicio de sesión exitoso",
                             "user": {
-                                "correo": "HolaMundo@gmail.com",
-                                "nombre": "Usuario de Ejemplo",
+                                "correo": correo,  # Usar el correo proporcionado
+                                "nombre": user[0],  # Nombre del usuario
+                                "apellido": user[1],  # Apellido del usuario
+                                "dni": user[2],  # DNI del usuario
                             },
                         }
                     ),
                     200,
                 )
             else:
-                return jsonify({"message": "Credenciales incorrectas"}), 401
+                return jsonify({"message": "Credenciales incorrectas"}), 200
         else:
             return jsonify({"message": "Usuario no encontrado"}), 404
 
@@ -125,32 +125,101 @@ def register():
     correo = data.get("correo")
     contraseña = data.get("contraseña")
     contraseña2 = data.get("contraseña2")
+    callePrimaria = data.get("callePrimaria")
+    calleSegundaria = data.get("calleSegundaria")
+    referencia = data.get("referencia")
+    ciudad = data.get("ciudad")
+    nCasa = data.get("nCasa")
+    provincia = data.get("provincia")
+    codPostal = data.get("codPostal")
+    pais = data.get("pais")
+    nTarjeta = data.get("nTarjeta")
+    tipoTarjeta = data.get("tipoTarjeta")
+    cvc = data.get("cvc")
+    fechaVenci = data.get("fechaVenci")
+
     if contraseña != contraseña2:
         return jsonify({"message": "Las contraseñas no coinciden"}), 400
-    # Generar el hash de la contraseña
+
     hashed_password = generate_password_hash(contraseña)
 
     conn = get_db_connection()
     if not conn:
         return jsonify({"message": "Error al conectar con la base de datos"}), 500
+
     try:
         cur = conn.cursor()
+        # Insertar usuario
         cur.execute(
-            "INSERT INTO usuario (dni, nom_nombre, nom_apellido, rol, cuenta_correo, cuenta_contrasena)"
+            "INSERT INTO usuario (dni, nom_nombre, nom_apellido, rol, cuenta_correo, cuenta_contrasena) "
             "VALUES (?, ?, ?, ?, ?, ?)",
+            (dni, nombre, apellido, "Cliente", correo, hashed_password),
+        )
+        # Insertar dirección
+        cur.execute(
+            "INSERT INTO direccion (dni_usuario, calle_primaria, calle_segundaria, referencia, ciudad, N_casa, provincia, cod_postal, pais) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
             (
                 dni,
-                nombre,
-                apellido,
-                "Cliente",
-                correo,
-                hashed_password,
-            ),  # Guardamos el hash
+                callePrimaria,
+                calleSegundaria,
+                referencia,
+                ciudad,
+                nCasa,
+                provincia,
+                codPostal,
+                pais,
+            ),
+        )
+        # Insertar tarjeta
+        cur.execute(
+            "INSERT INTO tarjeta (N_tarjeta, dni_usuario, tipo, cvc, fecha_venci) "
+            "VALUES (?, ?, ?, ?, ?)",
+            (nTarjeta, dni, tipoTarjeta, cvc, fechaVenci),
         )
         conn.commit()
         return jsonify({"message": "Usuario registrado con éxito"}), 201
     except mariadb.IntegrityError as e:
-        return jsonify({"message": "Error: El correo o DNI ya están registrados"}), 400
+        return jsonify({"message": f"Error: de Integrity {str(e)}"}), 400
+    except Exception as e:
+        return jsonify({"message": f"Error inesperado: {str(e)}"}), 500
+    finally:
+        conn.close()
+
+
+@app.route("/perfil/<dni>", methods=["GET"])
+def obtener_perfil(dni):
+    conn = get_db_connection()
+    if not conn:
+        return jsonify({"message": "Error al conectar con la base de datos"}), 500
+
+    try:
+        cur = conn.cursor(dictionary=True)
+        # Obtener datos del usuario
+        cur.execute("SELECT * FROM usuario WHERE dni = ?", (dni,))
+        usuario = cur.fetchone()
+
+        if not usuario:
+            return jsonify({"message": "Usuario no encontrado"}), 404
+
+        # Obtener dirección del usuario
+        cur.execute("SELECT * FROM direccion WHERE dni_usuario = ?", (dni,))
+        direccion = cur.fetchone()
+
+        # Obtener tarjeta del usuario
+        cur.execute("SELECT * FROM tarjeta WHERE dni_usuario = ?", (dni,))
+        tarjeta = cur.fetchone()
+
+        return (
+            jsonify(
+                {
+                    "usuario": usuario,
+                    "direccion": direccion,
+                    "tarjeta": tarjeta,
+                }
+            ),
+            200,
+        )
     except Exception as e:
         return jsonify({"message": f"Error inesperado: {str(e)}"}), 500
     finally:
@@ -193,6 +262,7 @@ def update_article(id):
     finally:
         conn.close()
 
+
 @app.route("/add_offer", methods=["POST"])
 def add_offer():
     data = request.get_json()
@@ -201,7 +271,9 @@ def add_offer():
     valor = data.get("valor")
     fecha_inicio = data.get("fecha_inicio")
     fecha_fin = data.get("fecha_fin")
-    articulos = data.get("articulos")  # Lista de códigos de artículos asociados a la oferta
+    articulos = data.get(
+        "articulos"
+    )  # Lista de códigos de artículos asociados a la oferta
 
     conn = get_db_connection()
     if not conn:
@@ -213,7 +285,7 @@ def add_offer():
         # Insertar la oferta
         cur.execute(
             "INSERT INTO oferta (nombre, tipo, valor, fecha_inicio, fecha_fin) VALUES (?, ?, ?, ?, ?)",
-            (nombre, tipo, valor, fecha_inicio, fecha_fin)
+            (nombre, tipo, valor, fecha_inicio, fecha_fin),
         )
         conn.commit()
 
@@ -225,7 +297,7 @@ def add_offer():
         for articulo_id in articulos:
             cur.execute(
                 "INSERT INTO detalle_oferta (id_oferta, id_articulo) VALUES (?, ?)",
-                (id_oferta, articulo_id)
+                (id_oferta, articulo_id),
             )
 
         conn.commit()
@@ -236,6 +308,7 @@ def add_offer():
     finally:
         conn.close()
 
+
 @app.route("/update_offer/<int:id>", methods=["PUT"])
 def update_offer(id):
     data = request.get_json()
@@ -244,7 +317,9 @@ def update_offer(id):
     valor = data.get("valor")
     fecha_inicio = data.get("fecha_inicio")
     fecha_fin = data.get("fecha_fin")
-    articulos = data.get("articulos")  # Lista de códigos de artículos asociados a la oferta
+    articulos = data.get(
+        "articulos"
+    )  # Lista de códigos de artículos asociados a la oferta
 
     conn = get_db_connection()
     if not conn:
@@ -258,7 +333,7 @@ def update_offer(id):
             """UPDATE oferta 
                SET nombre = ?, tipo = ?, valor = ?, fecha_inicio = ?, fecha_fin = ? 
                WHERE id_oferta = ?""",
-            (nombre, tipo, valor, fecha_inicio, fecha_fin, id)
+            (nombre, tipo, valor, fecha_inicio, fecha_fin, id),
         )
 
         # Eliminar los artículos existentes relacionados con esta oferta
@@ -268,7 +343,7 @@ def update_offer(id):
         for articulo_id in articulos:
             cur.execute(
                 "INSERT INTO detalle_oferta (id_oferta, id_articulo) VALUES (?, ?)",
-                (id, articulo_id)
+                (id, articulo_id),
             )
 
         conn.commit()
@@ -279,12 +354,13 @@ def update_offer(id):
     finally:
         conn.close()
 
+
 @app.route("/delete_offer/<int:id>", methods=["DELETE"])
 def delete_offer(id):
     conn = get_db_connection()
     if not conn:
         return jsonify({"message": "Error al conectar con la base de datos"}), 500
-    
+
     try:
         cur = conn.cursor()
 
@@ -308,18 +384,20 @@ def get_offers():
     conn = get_db_connection()
     if not conn:
         return jsonify({"message": "Error al conectar con la base de datos"}), 500
-    
+
     try:
         cur = conn.cursor()
         # Consulta que trae todas las ofertas con sus artículos relacionados, incluyendo el precio original
-        cur.execute("""
+        cur.execute(
+            """
             SELECT o.id_oferta, o.nombre, o.tipo, o.valor, o.fecha_inicio, o.fecha_fin, 
                    a.codigo_articulo, a.descripcion, a.url_img, a.precio
             FROM oferta o
             JOIN detalle_oferta dof ON o.id_oferta = dof.id_oferta
             JOIN articulo a ON dof.id_articulo = a.codigo_articulo
-        """)
-        
+        """
+        )
+
         offers = cur.fetchall()
         formatted_offers = []
         current_offer = None
@@ -335,23 +413,28 @@ def get_offers():
                     "valor": offer[3],
                     "fecha_inicio": offer[4],
                     "fecha_fin": offer[5],
-                    "articulos": []
+                    "articulos": [],
                 }
-            
+
             original_price = offer[9]
-            discount_percentage = round(offer[3], 2)  # Valor ya representa el porcentaje
-            discount_price = original_price - (original_price * (discount_percentage / 100))
-            
-            
-            current_offer["articulos"].append({
-                "codigo_articulo": offer[6],
-                "descripcion": offer[7],
-                "url_img": offer[8],
-                "precio_original": original_price,
-                "precio_oferta": round(discount_price, 2),
-                "descuento_porcentaje": discount_percentage
-            })
-        
+            discount_percentage = round(
+                offer[3], 2
+            )  # Valor ya representa el porcentaje
+            discount_price = original_price - (
+                original_price * (discount_percentage / 100)
+            )
+
+            current_offer["articulos"].append(
+                {
+                    "codigo_articulo": offer[6],
+                    "descripcion": offer[7],
+                    "url_img": offer[8],
+                    "precio_original": original_price,
+                    "precio_oferta": round(discount_price, 2),
+                    "descuento_porcentaje": discount_percentage,
+                }
+            )
+
         if current_offer:
             formatted_offers.append(current_offer)
 
@@ -362,20 +445,32 @@ def get_offers():
         conn.close()
 
 
-@app.route('/add_to_cart', methods=['POST'])
+@app.route("/add_to_cart", methods=["POST"])
 def add_to_cart():
     data = request.get_json()
+    codigo_articulo = data.get("codigo_articulo")
+    dni_Usuario = "1105526436"  # data.get('dni')
+    print(dni_Usuario)
     print(data)
-    codigo_articulo = data.get('codigo_articulo')
-    cantidad = data.get('cantidad')
-    dni_usuario = session.get('dni')
 
-    if not codigo_articulo or not dni_usuario or not cantidad:
-        return jsonify({"error": "El código de artículo, la cantidad y el DNI del usuario son requeridos"}), 400
+    if not codigo_articulo or not dni_Usuario:
+        return (
+            jsonify(
+                {"error": "El código de artículo y el DNI del usuario son requeridos"}
+            ),
+            400,
+        )
 
     try:
         conn = get_db_connection()
         cur = conn.cursor()
+        cur.execute(
+            """
+            SELECT n_pedido FROM pedido WHERE dni_usuario = %s
+            """,
+            (dni_Usuario,),
+        )
+        result = cur.fetchone()
 
         cur.execute("SELECT n_factura FROM factura WHERE n_factura IN (SELECT num_factura FROM pedido WHERE dni_usuario = %s)", (dni_usuario,))
         factura = cur.fetchone()
@@ -383,7 +478,15 @@ def add_to_cart():
         if factura:
             num_factura = factura[0]
         else:
-            cur.execute("INSERT INTO factura (fecha) VALUES (CURDATE())")
+            codigo_pago = 1  # Asignar valores predeterminados
+            num_factura = 1
+            cur.execute(
+                """
+                INSERT INTO pedido (dni_usuario, codigo_pago, num_factura)
+                VALUES (%s, %s, %s)
+                """,
+                (dni_Usuario, codigo_pago, num_factura),
+            )
             conn.commit()
             num_factura = cur.lastrowid
 
@@ -408,11 +511,25 @@ def add_to_cart():
             conn.commit()
             codigo_pedido = cur.lastrowid
 
-        cur.execute("INSERT INTO detalle_pedido (N_articulos, codigo_pedido, codigo_articulo) VALUES (%s, %s, %s)",
-                    (cantidad, codigo_pedido, codigo_articulo))
+        N_articulos = 1  # Cantidad predeterminada
+        cur.execute(
+            """
+            INSERT INTO detalle_pedido (N_articulos, codigo_pedido, codigo_articulo)
+            VALUES (%s, %s, %s)
+            """,
+            (N_articulos, codigo_pedido, codigo_articulo),
+        )
         conn.commit()
 
-        return jsonify({"message": "Artículo agregado al carrito exitosamente", "pedido_id": codigo_pedido}), 201
+        return (
+            jsonify(
+                {
+                    "message": "Artículo agregado al carrito exitosamente",
+                    "pedido_id": codigo_pedido,
+                }
+            ),
+            201,
+        )
 
     except mariadb.Error as e:
         print(f"Error al interactuar con la base de datos: {e}")
@@ -423,14 +540,11 @@ def add_to_cart():
             conn.close()
 
 
-#//////////////////////
- 
+# //////////////////////
 
 
-
-
-@app.route('/api/pedido/articulos', methods=['GET'])
-def get_articulos_por_pedido():
+@app.route("/api/pedido/<int:codigo_pedido>/articulos", methods=["GET"])
+def get_articulos_por_pedido(codigo_pedido):
     try:
         conn = get_db_connection()
         if not conn:
@@ -470,15 +584,17 @@ def get_articulos_por_pedido():
         cur.close()
         conn.close()
 
-        return jsonify(articulos), 200 if articulos else 404
+        if articulos:
+            return jsonify(articulos), 200
+        else:
+            return (
+                jsonify({"error": "No se encontraron artículos para este pedido"}),
+                404,
+            )
 
     except Exception as e:
         print(f"Error: {e}")
         return jsonify({"error": "Ocurrió un error en el servidor"}), 500
-
-
-
-
 
 
 # /////////////////////////////////////////////////////////////////

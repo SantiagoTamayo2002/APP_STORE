@@ -13,6 +13,7 @@ import Offers from './components/offers';
 import OfferAdmin from './components/addoffers';
 import ShoppingCart from './components/ShoppingCart';
 import GestionarPerfil from './components/GestionarPerfil'; // Importar el componente
+import Invoice from './components/invoice'; // Importar el componente Invoice
 
 function App() {
     return (
@@ -32,6 +33,7 @@ function App() {
                         <Route path="/shoppingCart" element={<ShoppingCart />} />
                         {/* Ruta para gestionar el perfil */}
                         <Route path="/perfil/:dni" element={<PrivateRoute><GestionarPerfil /></PrivateRoute>} />
+                        <Route path="/invoice" element={<PrivateRoute><Invoice /></PrivateRoute>} />
                     </Routes>
                 </div>
             </Router>

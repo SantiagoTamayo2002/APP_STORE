@@ -105,9 +105,9 @@ const ArticleCard = ({ codigoArticulo, descripcion, marca, modelo, precio, imgUr
                 <div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-filter backdrop-blur-lg transition-opacity duration-100'>
                     <div ref={detailRef} className='w-[70%] h-[500px] neumorphism-tarjeta p-4 transition-transform duration-100 transform scale-100'>
                         <div className='flex flex-col h-full'>
-                            <div className='flex justify-end'>
+                            <div className='flex justify-end  items-center'>
                                 <button
-                                    className='text-2xl text-[#3399ff]'
+                                    className='text-5xl text-[#3399ff] '
                                     onClick={handleDetailToggle}
                                 >
                                     &times;

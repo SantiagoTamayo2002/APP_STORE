@@ -2,12 +2,22 @@ import React, { useEffect, useState } from 'react';
 import Button from './button';
 import { ToastContainer, toast } from 'react-toastify';
 const API = 'http://localhost:5000';
+import { HiOutlineX } from "react-icons/hi";
+import { Link } from "react-router-dom";
 
 const ArticlesAdmin = () => {
 
     const [articles, setArticles] = useState([]);
     const [articuloObtenido, setEditingArticle] = useState(null);
     const [formulario, setFormulario] = useState(false);
+    const [newArticle, setNewArticle] = useState({
+        codigo_articulo: '',
+        precio: '',
+        descripcion: '',
+        marca: '',
+        modelo: '',
+        url_img: ''
+    });
 
     ////////////////////////////////////////////////////////////////////////////////////
     const notify = () => toast("Artículo eliminado con éxito");
@@ -79,10 +89,37 @@ const ArticlesAdmin = () => {
     };
 
     ////////////////////////////////////////////////////////////////////////////////////
+    //                   función para agregar un nuevo artículo
 
-    const setArticle = () => {
-
-    }
+    const handleInsert = (e) => {
+        e.preventDefault();
+        fetch('http://localhost:5000/articles', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newArticle)
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.message) {
+                toast.success(data.message);
+                setArticles([...articles, newArticle]);
+                setNewArticle({
+                    codigo_articulo: '',
+                    precio: '',
+                    descripcion: '',
+                    marca: '',
+                    modelo: '',
+                    url_img: ''
+                });
+            } else {
+                toast.error(data.error);
+            }
+        })
+        .catch((error) => {
+            console.error('Error al agregar artículo:', error);
+            toast.error('Error al agregar artículo');
+        });
+    };
 
     ////////////////////////////////////////////////////////////////////////////////////
 
@@ -107,11 +144,15 @@ const ArticlesAdmin = () => {
     ////////////////////////////////////////////////////////////////////////////////////
 
     return (
-        <div className='bg-[#101828] h-full w-full '>
+        <div className='bg-[#101828] h-full w-full pt-2'>
             <div className='bg-[#101828] h-full w-full text-white'>
-                <h1>Artículos</h1>
-                <div>
-                    <Button text='Agregar Artículo' onClick={() => setEditingArticle({})}/>
+                <div className=' justify-start p-1 flex text-xl font-semibold m-6  items-center'>
+                    <div className='text-3xl mr-5 rounded-full border-2 border-[#3399ff] bg-[#3399ff]'>
+                        <Link to="/welcome"> <HiOutlineX /> </Link>
+                    </div>
+                    <div className='text-center text-xl font-semibold  border border-[#3399ff] rounded-lg p-1 bg-[#3399ff]'>
+                        <Link to="/form">Agregar artículo</Link>
+                    </div>
                 </div>
                 <table className='table-auto w-[90%] m-auto'>
                     <thead>

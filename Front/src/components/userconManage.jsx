@@ -39,10 +39,8 @@ const UserconManage = () => {
                     <p className="my-2 p-1 hover-button-custom">
                         <Link to={`/perfil/${usuario.dni}`}>Gestionar perfil</Link>
                     </p>                    
-                    <p className="my-2 p-1 hover-button-custom">Historial de pedidos</p>
                     <p className="my-2 p-1 hover-button-custom">
-                        <Link to="/articles">Panel de administración</Link>
-                       
+                        <Link to="/articles">Panel de administración</Link> 
                     </p>
                     <p className="my-2 p-1 hover-button-custom">
                         <Link to="/addoffers">Agregar Ofertas</Link>

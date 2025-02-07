@@ -1,8 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import '../App.css';
-import { BsSearch } from "react-icons/bs";
-import { FaShoppingCart } from "react-icons/fa";
 import UserconManage from "./userconManage";
 
 const Navbar = () => {

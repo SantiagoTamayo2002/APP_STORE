@@ -47,17 +47,6 @@ def get_article_by_id(id):
 def index():
     return "<h1> SI HAY SERVER :) </h1>"
 
-
-@app.route("/add_user")
-def agregar_usuarios():
-    return "usuario agregado de manera exitosa"
-
-
-@app.route("/update_data_user")
-def actualizar_info_usuarios():
-    return "credenciales actualizadas de manera correcta"
-
-
 @app.route("/articles")
 def show_articles():
     articles = get_article_names()
@@ -261,6 +250,33 @@ def update_article(id):
         return jsonify({"message": "Artículo actualizado con éxito"}), 200
     finally:
         conn.close()
+
+#////////////////////////////////////////////////////////////////
+
+@app.route("/articles", methods=["POST"])
+def add_article():
+    data = request.get_json()
+    print(data)
+    conn = get_db_connection()
+    if not conn:
+        return jsonify({"message": "Error al conectar con la base de datos"}), 500
+    try:
+        cur = conn.cursor()
+        cur.execute(
+            f"""INSERT INTO articulo (precio, descripcion, marca, modelo, url_img)
+                VALUES ({data["precio"]}, 
+                       '{data["descripcion"]}', 
+                        '{data["marca"]}', 
+                        '{data["modelo"]}', 
+                        '{data["url_img"]}')"""
+        )
+        conn.commit()
+        return jsonify({"message": "Artículo agregado con éxito"}), 201
+    finally:
+        conn.close()
+
+#////////////////////////////////////////////////////////////////
+
 
 
 @app.route("/add_offer", methods=["POST"])

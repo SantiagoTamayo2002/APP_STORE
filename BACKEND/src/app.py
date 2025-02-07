@@ -561,7 +561,63 @@ def get_articulos_por_pedido():
 
 # /////////////////////////////////////////////////////////////////
 
+@app.route('/generate_invoice', methods=['POST'])
+def generate_invoice():
+    dni = session.get('dni')
 
+    conn = get_db_connection()
+    if not conn:
+        return jsonify({"message": "Error al conectar con la base de datos"}), 500
+
+    try:
+        cur = conn.cursor(dictionary=True)
+
+        # Obtener pedidos del usuario
+        cur.execute("SELECT n_pedido FROM pedido WHERE dni_usuario = %s", (dni,))
+        pedidos = cur.fetchall()
+
+        if not pedidos:
+            return jsonify({"message": "No se encontraron pedidos para este usuario"}), 404
+
+        total_amount = 0
+        invoice_details = []
+
+        for pedido in pedidos:
+            cur.execute("""
+                SELECT a.codigo_articulo, a.descripcion, a.marca, a.modelo, a.precio, dp.N_articulos 
+                FROM detalle_pedido dp
+                JOIN articulo a ON dp.codigo_articulo = a.codigo_articulo
+                WHERE dp.codigo_pedido = %s
+            """, (pedido['n_pedido'],))
+
+            detalles = cur.fetchall()
+
+            for detalle in detalles:
+                subtotal = detalle['precio'] * detalle['N_articulos']
+                total_amount += subtotal
+                invoice_details.append({
+                    "articulo": {
+                        "codigo_articulo": detalle['codigo_articulo'],
+                        "descripcion": detalle['descripcion'],
+                        "marca": detalle['marca'],
+                        "modelo": detalle['modelo'],
+                        "precio": detalle['precio']
+                    },
+                    "cantidad": detalle['N_articulos'],
+                    "subtotal": subtotal
+                })
+
+        return jsonify({
+            "success": True,
+            "total_amount": total_amount,
+            "invoice_details": invoice_details
+        }), 200
+
+    except Exception as e:
+        return jsonify({"message": f"Error inesperado: {str(e)}"}), 500
+
+    finally:
+        conn.close()
 
 
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from './navbar';
 import Footer from './Footer';
 import '../App.css';
+import { FaCartPlus } from "react-icons/fa";
 
 function Offers() {
     const [offers, setOffers] = useState([]);
@@ -16,6 +17,29 @@ function Offers() {
     const formatDate = (dateString) => {
         const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
         return new Date(dateString).toLocaleDateString('es-ES', options);
+    };
+
+    const handleAddToCart = (codigoArticulo, cantidad) => {
+        const payload = {
+            codigo_articulo: codigoArticulo,
+            cantidad: cantidad,
+        };
+
+        fetch("http://localhost:5000/add_to_cart", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify(payload),
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.message) {
+                alert(data.message);
+            } else {
+                console.error(data.error);
+            }
+        })
+        .catch((error) => console.error("Error al agregar al carrito:", error));
     };
 
     return (
@@ -47,6 +71,24 @@ function Offers() {
                                                     className="article-image mt-4 w-full h-48 object-cover rounded-lg shadow-md border border-gray-500" 
                                                 />
                                             )}
+                                        </div>
+                                        <div className="flex gap-2 items-center mt-2">
+                                            <select
+                                                className="neumorphism-button px-3 py-1 bg-gray-200"
+                                                onChange={(e) => article.cantidad = parseInt(e.target.value)}
+                                            >
+                                                {[...Array(10).keys()].map((num) => (
+                                                    <option key={num + 1} value={num + 1}>
+                                                        {num + 1}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                            <button 
+                                                className="neumorphism-button px-3 py-1 flex gap-2 items-center"
+                                                onClick={() => handleAddToCart(article.codigo_articulo, article.cantidad || 1)}
+                                            >
+                                                Confirmar <FaCartPlus />
+                                            </button>
                                         </div>
                                     </li>
                                 ))}

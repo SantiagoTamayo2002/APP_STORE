@@ -35,6 +35,16 @@ const AddOffer = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    if (name === "valor") {
+      let parsedValue = parseFloat(value);
+      if (isNaN(parsedValue) || parsedValue < 0) {
+          parsedValue = 0;
+      } else if (parsedValue > 100) {
+          parsedValue = 100;
+      }
+      setOfferData(prevState => ({ ...prevState, [name]: parsedValue }));
+      return;
+  }
     setOfferData(prevState => ({ ...prevState, [name]: value }));
   };
 
